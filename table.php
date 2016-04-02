@@ -9,28 +9,23 @@ $data = $database->query("SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FR
 ?>
 <html>
 <head>
-<title>Robin Tracker</title>
-<style type='text/css'>
-td {
-  background-color: #eeeeee;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-</style>
+<title>RobinTracker</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
 <body>
 <h1>Robin Tracker</h1>
 
-<table>
-<th><tr>
+<table class='table table-striped'>
+<thead><tr>
 <td><b>Room</b></td>
 <td><b>Total</b></td>
 <td><b>Grow</b></td>
 <td><b>Stay</b></td>
 <td><b>Abandon</b></td>
 <td><b>Abstains</b></td>
-</tr></th>
+</tr></thead>
 
+<tbody>
 <?foreach($data as $row):?>
 <tr>
 <td><?=$row['room']?></td>
@@ -40,8 +35,8 @@ td {
 <td><?=$row['abandon']?></td>
 <td><?=$row['novote']?></td>
 </td>
-
 <?endforeach;?>
+</tbody>
 </table>
 <br /><br />
 <a href='https://github.com/jrwr/robintracker'>Fork me on GitHub</a>.<br/>
