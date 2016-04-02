@@ -57,5 +57,7 @@ function prettyDeltaTime($reference)
 <br /><br />
 <a href='https://monstrouspeace.com/robintracker/table.php'>Fork me on GitHub</a>.<br/>
 <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin Autovote Script</a>.<br />
+<br />
+Shoutout to the Romanian (or person tunneling through Romania). <3
 </body>
 </html>
