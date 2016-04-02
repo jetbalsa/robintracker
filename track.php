@@ -19,9 +19,8 @@ if (intval(@$_GET['count']) != (intval(@$_GET['gr'])+intval(@$_GET['st'])+intval
 $data = $database->query("SELECT * FROM track WHERE `ip`=".$database->quote(@$_SERVER['REMOTE_ADDR'])." AND `time`>(UNIX_TIMESTAMP()-45)")->fetchAll();
 if(count($data)!=0) { die(); }
 
-
 $last_user_id = $database->insert("track", [
-	"guid" => @$_GET['guid'],
+	"guid" => "".@$_GET['guid'],
 	"room" => $_GET['id'],
 	"abandon" => @$_GET['ab'],
 	"stay" => @$_GET['st'],
@@ -33,3 +32,4 @@ $last_user_id = $database->insert("track", [
 	"time" => time(),
 	"ip" => @$_SERVER['REMOTE_ADDR']
 ]);
+
