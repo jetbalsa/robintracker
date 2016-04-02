@@ -4,7 +4,7 @@ require_once "config.php";
 // TODO:
 //  * The reap timer needs to be displayed
 //  * Need to readd last update. I removed it for cleanliness
-$data = $database->query("SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FROM track WHERE `time`>(UNIX_TIMESTAMP()-300) GROUP BY `room`) ORDER BY `track`.`count` DESC")->fetchAll();
+$data = $database->query("SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FROM track WHERE `count`>100 AND `time`>(UNIX_TIMESTAMP()-300) GROUP BY `room`) ORDER BY `track`.`count` DESC")->fetchAll();
 ?>
 <html>
 <head>
