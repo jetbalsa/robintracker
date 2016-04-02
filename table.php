@@ -1,7 +1,6 @@
 <?php
+require_once "config.php";
 
-// SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FROM track GROUP BY `room`) ORDER BY `track`.`count` DESC 
-require("medoo.php");
 $data = $database->query("SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FROM track GROUP BY `room`) ORDER BY `track`.`count` DESC")->fetchAll();
 echo "<pre>";
 echo "Room - Total Count - Last Time Seen" . PHP_EOL;
