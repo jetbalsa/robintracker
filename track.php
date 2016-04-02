@@ -21,6 +21,7 @@ if(count($data)!=0) { die(); }
 
 
 $last_user_id = $database->insert("track", [
+	"guid" => @$_GET['guid'],
 	"room" => $_GET['id'],
 	"abandon" => @$_GET['ab'],
 	"stay" => @$_GET['st'],
