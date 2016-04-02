@@ -11,6 +11,11 @@ if(in_array(@$_SERVER['REMOTE_ADDR'],$banlist)){ die(); }
 // Basic data validation
 if (intval(@$_GET['count']) != (intval(@$_GET['gr'])+intval(@$_GET['st'])+intval(@$_GET['ab'])+intval(@$_GET['nv']))) { die(); }
 
+// If this IP has posted a result in the last 45 seconds: bail
+$data = $database->query("SELECT * FROM track WHERE `ip`=".$database->quote(@$_SERVER['REMOTE_ADDR'])." AND `time`>(UNIX_TIMESTAMP()-45)")->fetchAll();
+if(count($data)!=0) { die(); }
+
+
 $last_user_id = $database->insert("track", [
 	"room" => $_GET['id'],
 	"abandon" => @$_GET['ab'],
