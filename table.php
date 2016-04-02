@@ -1,9 +1,6 @@
 <?php
 require_once "config.php";
 
-// TODO:
-//  * The reap timer needs to be displayed
-//  * Need to readd last update. I removed it for cleanliness
 $data = $database->query("SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FROM track WHERE `count`>100 AND `time`>(UNIX_TIMESTAMP()-300) GROUP BY `room`) ORDER BY `track`.`count` DESC")->fetchAll();
 ?>
 <html>
@@ -22,7 +19,24 @@ $data = $database->query("SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FR
 <td><b>Stay</b></td>
 <td><b>Abandon</b></td>
 <td><b>Abstains</b></td>
+<td><b>Founded</b></td>
+<td><b>Reaping</b></td>
+<td><b>Updated</b></td>
 </tr></thead>
+
+<?php
+function prettyDeltaTime($reference)
+{
+	$reference = intval($reference);
+	$time = time();
+	$dt = abs($reference - $time);
+
+	$minutes = floor(($dt - ($hours*60))/60);
+	$seconds = $dt - (($minutes + ($hours*60)) * 60);
+
+	return $minutes . "m" . $seconds . "s " . (($reference > $time)?"from now":"ago");
+}
+?>
 
 <tbody>
 <?foreach($data as $row):?>
@@ -33,6 +47,9 @@ $data = $database->query("SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FR
 <td><?=$row['stay']?></td>
 <td><?=$row['abandon']?></td>
 <td><?=$row['novote']?></td>
+<td><?=prettyDeltaTime($row['formation']);?></td>
+<td><?=prettyDeltaTime($row['reap']);?></td>
+<td><?=prettyDeltaTime($row['time']);?></td>
 </td>
 <?endforeach;?>
 </tbody>
