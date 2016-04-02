@@ -1,8 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: *');  
 echo "OK";
-require("medoo.php");
-// jrwr_robin - 7LbdcZWwkq65pmvy
+require_once "config.php";
 if(empty($_GET['id'])){ die(); }
 $last_user_id = $database->insert("track", [
 	"room" => $_GET['id'],
@@ -11,8 +10,8 @@ $last_user_id = $database->insert("track", [
 	"grow" => @$_GET['gr'],
 	"novote" => @$_GET['nv'],
 	"count" => @$_GET['count'],
-	"rt" => @$_GET['rt'],
-	"ft" => @$_GET['ft'],
-	"timestamp" => time(),
+	"reap" => @$_GET['rt'],
+	"formation" => @$_GET['ft'],
+	"time" => time(),
 	"ip" => @$_SERVER['REMOTE_ADDR']
 ]);
