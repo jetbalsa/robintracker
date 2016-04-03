@@ -45,6 +45,7 @@ function prettyDeltaTime($reference)
 <tbody>
 <?foreach($data as $row):?>
 <tr>
+<!--<?=$row['guid']?>-->
 <td><?=$row['room']?></td>
 <td><?=$row['count']?></td>
 <td><?=$row['grow']?></td>
@@ -58,21 +59,21 @@ function prettyDeltaTime($reference)
 <?endforeach;?>
 </tbody>
 </table>
+<a href='https://monstrouspeace.com/robintracker/table.php'>Fork me on GitHub</a> | 
+<a href='https://github.com/keythkatz/Robin-Autovoter'>Robin Autovote Script</a><br />
 <?php
 $data = $database->query("SELECT COUNT(*) as `count` FROM `track` WHERE `time`>(UNIX_TIMESTAMP()-60)")->fetchAll();
 $ppm = $data[0]['count'];
 ?>
-<?=$ppm?> rooms updated in the last minute.
-<br /><br />
-<a href='https://monstrouspeace.com/robintracker/table.php'>Fork me on GitHub</a> | 
-<a href='https://github.com/keythkatz/Robin-Autovoter'>Robin Autovote Script</a><br />
-<br />
-Shoutout to the Romanian (or person tunneling through Romania). <3<br />
+<?=$ppm?> rooms updated in the last minute.<br />
 <?php
 $end_time = explode(' ',microtime());
 $total_time = ($end_time[0] + $end_time[1]) - $start_time;
 printf("Generated in %.3fs",$total_time);
 ?>
+
+<!-- Shoutout to the Romanian (or person tunneling through Romania). <3 Without you this service wouldn't be anywhere near as good as it is today you wonderful pain in the ass -->
+
 <?=@$footer?>
 </body>
  </html>
