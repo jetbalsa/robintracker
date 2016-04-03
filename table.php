@@ -1,6 +1,9 @@
 <?php
 require_once "config.php";
 
+$start_time = explode(' ',microtime());
+$start_time = $start_time[0] + $start_time[1];
+
 $data = $database->query("SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FROM track WHERE `count`>100 AND `time`>(UNIX_TIMESTAMP()-300) AND `time`<(UNIX_TIMESTAMP()) GROUP BY `room`) ORDER BY `track`.`count` DESC")->fetchAll();
 ?>
 <html>
@@ -54,10 +57,21 @@ function prettyDeltaTime($reference)
 <?endforeach;?>
 </tbody>
 </table>
+<?php
+$data = $database->query("SELECT COUNT(*) as `count` FROM `track` WHERE `time`>(UNIX_TIMESTAMP()-60)")->fetchAll();
+$ppm = $data[0]['count'];
+?>
+<?=$ppm?> rooms updated in the last minute.
 <br /><br />
-<a href='https://monstrouspeace.com/robintracker/table.php'>Fork me on GitHub</a>.<br/>
-<a href='https://github.com/keythkatz/Robin-Autovoter'>Robin Autovote Script</a>.<br />
+<a href='https://monstrouspeace.com/robintracker/table.php'>Fork me on GitHub</a> | 
+<a href='https://github.com/keythkatz/Robin-Autovoter'>Robin Autovote Script</a><br />
 <br />
-Shoutout to the Romanian (or person tunneling through Romania). <3
+Shoutout to the Romanian (or person tunneling through Romania). <3<br />
+<?php
+$end_time = explode(' ',microtime());
+$total_time = ($end_time[0] + $end_time[1]) - $start_time;
+printf("Generated in %.3fs",$total_time);
+?>
+<?=@$footer?>
 </body>
-</html>
+ </html>
