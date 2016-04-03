@@ -59,7 +59,7 @@ function prettyDeltaTime($reference)
 <?endforeach;?>
 </tbody>
 </table>
-<a href='https://monstrouspeace.com/robintracker/table.php'>Fork me on GitHub</a> | 
+<a href='https://github.com/jhon/robintracker'>Fork me on GitHub</a> | 
 <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin Autovote Script</a><br />
 <?php
 $end_time = explode(' ',microtime());
