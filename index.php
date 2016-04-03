@@ -4,7 +4,7 @@ require_once "config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
-$data = $database->query("SELECT * FROM (SELECT * FROM `track` WHERE `count`>100 AND `time`>(UNIX_TIMESTAMP()-60) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC")->fetchAll();
+$data = $database->query("SELECT * FROM (SELECT * FROM `track` WHERE `count`>50 AND `time`>(UNIX_TIMESTAMP()-60) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC")->fetchAll();
 ?>
 <html>
 <head>
@@ -66,7 +66,12 @@ $totalAbstain += $row['novote'];
 <td><?=$row['stay']?></td>
 <td><?=$row['abandon']?></td>
 <td><?=$row['novote']?></td>
+<?if(@$_GET['ft']=='absolute'):?>
+<?date_default_timezone_set("America/New_York")?>
+<td><?=date("m-d-Y H:i T",$row['formation']);?></td>
+<?else:?>
 <td><?=prettyDeltaTime($row['formation']);?></td>
+<?endif;?>
 <td><?=prettyDeltaTime($row['reap']);?></td>
 <td><?=prettyDeltaTime($row['time']);?></td>
 </td>
