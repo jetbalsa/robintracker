@@ -6,3 +6,5 @@ Simple PHP scripts for running a leaderboard
 2. Copy config.sample.php to config.php and add your database settings
 3. ???
 4. Profit
+
+![1](https://i.imgur.com/Tc7vSur.png)
