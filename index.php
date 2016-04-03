@@ -4,7 +4,7 @@ require_once "config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
-$data = $database->query("SELECT * FROM (SELECT * FROM `track` WHERE `count`>100 AND `time`>(UNIX_TIMESTAMP()-60) ORDER BY `id` DESC) as T GROUP BY `room` ORDER BY `count` DESC")->fetchAll();
+$data = $database->query("SELECT * FROM (SELECT * FROM `track` WHERE `count`>100 AND `time`>(UNIX_TIMESTAMP()-60) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC")->fetchAll();
 ?>
 <html>
 <head>
@@ -62,10 +62,11 @@ function prettyDeltaTime($reference)
 <a href='https://github.com/jhon/robintracker'>Fork me on GitHub</a> | 
 <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin Autovote Script</a><br />
 <?php
-$data = $database->query("SELECT COUNT(*) as `count` FROM `track` WHERE `time`>(UNIX_TIMESTAMP()-60)")->fetchAll();
+$data = $database->query("SELECT COUNT(`id`) as `count`, COUNT(DISTINCT `guid`) as `rooms` FROM `track` WHERE `time`>(UNIX_TIMESTAMP()-60)")->fetchAll();
 $ppm = $data[0]['count'];
+$rooms = $data[0]['rooms'];
 ?>
-<?=$ppm?> rooms updated in the last minute.<br />
+<?=$ppm?> updates for <?=$rooms?> rooms in the last minute.<br />
 <?php
 $end_time = explode(' ',microtime());
 $total_time = ($end_time[0] + $end_time[1]) - $start_time;
