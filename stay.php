@@ -4,7 +4,7 @@ require_once "config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
-$data = $database->query("SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FROM track WHERE `stay`>50 AND `guid`!='' GROUP BY `guid`) AND `time`<(UNIX_TIMESTAMP()-300) ORDER BY `track`.`stay` DESC")->fetchAll();
+$data = $database->query("SELECT `A`.`users` as 'users', `track`.* FROM (SELECT MAX(`id`) AS 'id', COUNT(DISTINCT `ip`) AS 'users' FROM track WHERE `stay`>50 AND `guid`!='' GROUP BY `guid`) AS A, `track` WHERE `track`.id = A.`id` AND `track`.`time`<(UNIX_TIMESTAMP()-300) AND `A`.users > 3 ORDER BY `track`.`stay` DESC")->fetchAll();
 ?>
 <html>
 <head>
@@ -14,7 +14,7 @@ $data = $database->query("SELECT * FROM track WHERE `id` IN (SELECT MAX(`id`) FR
 </head>
 <body>
 <h1>Robin Tracker</h1>
-These are rooms that ended with over 50 people voting stay and that we haven't received an update for within the last 5 minutes. This is based on data that only started getting collected late Saturday PDT.
+These are rooms that ended with over 50 people voting stay, that we haven't received an update for within the last 5 minutes, and that we were getting updates from at least 3 sources. This is based on data that only started getting collected late Saturday PDT.
 <table class='table table-striped'>
 <thead><tr>
 <td><b>Room</b></td>
@@ -24,8 +24,8 @@ These are rooms that ended with over 50 people voting stay and that we haven't r
 <td><b>Abandon</b></td>
 <td><b>Abstains</b></td>
 <td><b>Founded</b></td>
-<td><b>Reaping</b></td>
-<td><b>Updated</b></td>
+<td><b>Reaped</b></td>
+<td><b>Last Seen</b></td>
 </tr></thead>
 
 <?php
@@ -52,9 +52,9 @@ function prettyDeltaTime($reference)
 <td><?=$row['stay']?></td>
 <td><?=$row['abandon']?></td>
 <td><?=$row['novote']?></td>
-<td><?=prettyDeltaTime($row['formation']);?></td>
-<td><?=prettyDeltaTime($row['reap']);?></td>
-<td><?=prettyDeltaTime($row['time']);?></td>
+<td><?=date("d-m-Y H:i T",$row['formation']);?></td>
+<td><?=date("d-m-Y H:i T",$row['reap']);?></td>
+<td><?=date("d-m-Y H:i T",$row['time']);?></td>
 </td>
 <?endforeach;?>
 </tbody>
