@@ -43,7 +43,21 @@ function prettyDeltaTime($reference)
 ?>
 
 <tbody>
+<?php
+$totalUsers = 0;
+$totalGrow = 0;
+$totalAbandon = 0;
+$totalAbstains = 0;
+?>
+
 <?foreach($data as $row):?>
+<?php
+$totalUsers += $row['count'];
+$totalGrow += $row['grow'];
+$totalStay += $row['stay'];
+$totalAbandon += $row['abandon'];
+$totalAbstain += $row['novote'];
+?>
 <tr>
 <!--<?=$row['guid']?>-->
 <td><?=$row['room']?></td>
@@ -57,6 +71,17 @@ function prettyDeltaTime($reference)
 <td><?=prettyDeltaTime($row['time']);?></td>
 </td>
 <?endforeach;?>
+<tr>
+<td><b>Table Sum</b></td>
+<td><?=$totalUsers?></td>
+<td><?=$totalGrow?></td>
+<td><?=$totalStay?></td>
+<td><?=$totalAbandon?></td>
+<td><?=$totalAbstain?></td>
+<td/>
+<td/>
+<td/>
+</tr>
 </tbody>
 </table>
 <a href='https://github.com/jhon/robintracker'>Fork me on GitHub</a> | 
