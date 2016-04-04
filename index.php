@@ -10,7 +10,14 @@ $data = $database->query("SELECT *, COUNT(*) AS 'beacons', MAX(`time`) as 'time'
 <head>
 <title>RobinTracker</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<meta http-equiv="refresh" content="60;">
+<?php
+$r = intval(@$_GET['r']);
+if($r==0)
+{
+	$r = 60;
+}
+?>
+<meta http-equiv="refresh" content="<?=$r?>">
 </head>
 <body>
 <h1>Robin Tracker</h1>
