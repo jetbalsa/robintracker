@@ -4,7 +4,7 @@ require_once "config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
-$data = $database->query("SELECT `A`.`users` as 'users', `track`.* FROM (SELECT MAX(`id`) AS 'id', COUNT(DISTINCT `ip`) AS 'users' FROM track WHERE `stay`>50 AND `guid`!='' GROUP BY `guid`) AS A, `track` WHERE `track`.id = A.`id` AND `track`.`time`<(UNIX_TIMESTAMP()-300) AND `A`.users > 3 ORDER BY `track`.`stay` DESC")->fetchAll();
+$data = $database->query("SELECT `A`.`users` as 'users', `track_storage`.* FROM (SELECT MAX(`id`) AS 'id', COUNT(DISTINCT `ip`) AS 'users' FROM `track_storage` WHERE `stay`>50 AND `guid`!='' GROUP BY `guid`) AS A, `track_storage` WHERE `track_storage`.id = A.`id` AND `track_storage`.`time`<(UNIX_TIMESTAMP()-300) AND `A`.users > 3 ORDER BY `track_storage`.`stay` DESC")->fetchAll();
 ?>
 <html>
 <head>
@@ -52,9 +52,9 @@ function prettyDeltaTime($reference)
 <td><?=$row['stay']?></td>
 <td><?=$row['abandon']?></td>
 <td><?=$row['novote']?></td>
-<td><?=date("d-m-Y H:i T",$row['formation']);?></td>
-<td><?=date("d-m-Y H:i T",$row['reap']);?></td>
-<td><?=date("d-m-Y H:i T",$row['time']);?></td>
+<td><?=date("m-d-Y H:i T",$row['formation']);?></td>
+<td><?=date("m-d-Y H:i T",$row['reap']);?></td>
+<td><?=date("m-d-Y H:i T",$row['time']);?></td>
 </td>
 <?endforeach;?>
 </tbody>
