@@ -30,7 +30,23 @@ if($r==0)
 <td><b>Stay</b></td>
 <td><b>Abandon</b></td>
 <td><b>Abstains</b></td>
-<td><b>Founded</b></td>
+<td>
+<b>Founded</b>
+<?php
+$queryString = "?" . (($r==60)?"":"r=".$r."&") . "ft=";
+$label = "";
+if(@$_GET['ft']=='absolute')
+{
+	$label = 'relative';
+}
+else
+{
+	$label = 'absolute';
+}
+$queryString .= $label;
+?>
+( <a href='<?=$queryString?>'>show <?=$label?></a> )
+</td>
 <td><b>Reaping</b></td>
 <td><b>Updated</b></td>
 </tr></thead>
@@ -78,12 +94,12 @@ if($row['count'] >= 100 && $row['beacons']<5)
 
 // Spruce up 
 // For 100+ rooms, we get enough beacons that >30 seconds may have merged
-if($row['count'] >= 100 && $dt > 30)
+if($time > $row['reap'] && $row['count'] >= 100 && $dt > 30)
 {
 	array_push($class,"warning");
 }
 // If we haven't gotten a beacon in 60 seconds it almost certainly merged
-if($dt>60)
+if($time > $row['reap'] && $dt>60)
 {
 	array_push($class,"danger");
 }
