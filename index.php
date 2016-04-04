@@ -110,6 +110,7 @@ if(abs($time-$row['formation'])<120)
 }
 ?>
 <tr class="<?=implode(' ',$class)?>">
+<!--<?=$row['guid']?>-->
 <td><?=$row['room']?></td>
 <td><?=$row['count']?></td>
 <td><?=$row['grow']?></td>
