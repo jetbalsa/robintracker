@@ -94,7 +94,7 @@ if($row['count'] >= 100 && $row['beacons']<3)
 </tr>
 </tbody>
 </table>
-Contribute data using the <a href='https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js'>Standalone Userscript</a> or using a compatible script like <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin-Autovoter</a>.<br />
+Contribute data using the <a href='https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js'>Standalone Userscript</a> or by enabling cotribution in a compatible script like <a href='https://github.com/vartan/robin-grow'>Robin-Grow</a> or <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin-Autovoter</a>.<br />
 Found an issue or want to contribute code? <a href='https://github.com/jhon/robintracker'>Visit the GitHub</a>.<br />
 Want more Robin data? Checkout the <a href='https://www.reddit.com/r/robintracking/comments/4czzo2/robin_chatter_leader_board_official/'>Official Leader Board</a> and <a href='http://robintree-apr3.s3-website-us-east-1.amazonaws.com/'>RobinTree</a>.<br />
 <br />
