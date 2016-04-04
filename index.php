@@ -89,18 +89,20 @@ $totalAbstain += $row['novote'];
 </tr>
 </tbody>
 </table>
-<a href='https://github.com/jhon/robintracker'>Fork me on GitHub</a> | 
-<a href='https://github.com/keythkatz/Robin-Autovoter'>Robin Autovote Script</a> | <a href='http://robintree-apr3.s3-website-us-east-1.amazonaws.com/'>RobinTree</a><br />
+Contribute data using the <a href='https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js'>Standalone Userscript</a> or using a compatible script like <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin-Autovoter</a>.<br />
+Found an issue or want to contribute code? <a href='https://github.com/jhon/robintracker'>Visit the GitHub</a>.<br />
+Want more Robin data? Checkout the <a href='https://www.reddit.com/r/robintracking/comments/4czzo2/robin_chatter_leader_board_official/'>Official Leader Board</a> and <a href='http://robintree-apr3.s3-website-us-east-1.amazonaws.com/'>RobinTree</a>.<br />
+<br />
 <?php
 $data = $database->query("SELECT COUNT(`id`) as `count`, COUNT(DISTINCT `guid`) as `rooms` FROM `track` WHERE `time`>(UNIX_TIMESTAMP()-60)")->fetchAll();
 $ppm = $data[0]['count'];
 $rooms = $data[0]['rooms'];
 ?>
-<?=$ppm?> updates for <?=$rooms?> rooms in the last minute.<br />
+<?=$ppm?> updates for <?=$rooms?> rooms in the last minute |
 <?php
 $end_time = explode(' ',microtime());
 $total_time = ($end_time[0] + $end_time[1]) - $start_time;
-printf("Generated in %.3fs",$total_time);
+printf("Page generation took %.3fs",$total_time);
 ?>
 
 <!-- Shoutout to the Romanian (or person tunneling through Romania). <3 Without you this service wouldn't be anywhere near as good as it is today you wonderful pain in the ass -->
