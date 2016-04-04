@@ -4,7 +4,7 @@ require_once "config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
-$data = $database->query("SELECT *, COUNT(*) AS 'beacons' FROM (SELECT * FROM `track` WHERE `count`>50 AND `time`>(UNIX_TIMESTAMP()-60) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC LIMIT 10")->fetchAll();
+$data = $database->query("SELECT *, COUNT(*) AS 'beacons', MAX(`time`) as 'time' FROM (SELECT * FROM `track` WHERE `count`>50 AND `time`>(UNIX_TIMESTAMP()-120) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC LIMIT 10")->fetchAll();
 ?>
 <html>
 <head>
@@ -52,19 +52,35 @@ $totalAbstains = 0;
 
 <?foreach($data as $row):?>
 <?php
+// If the last update for this was actually >60s, bail
+$time = time();
+$dt = abs($time-$row['time']);
+
 $totalUsers += $row['count'];
 $totalGrow += $row['grow'];
 $totalStay += $row['stay'];
 $totalAbandon += $row['abandon'];
 $totalAbstain += $row['novote'];
 
-// Only report rooms with over 100 people if we have 3+ beacons
-if($row['count'] >= 100 && $row['beacons']<3)
+$class = [];
+// Only report rooms with over 100 people if we have 5+ beacons
+if($row['count'] >= 100 && $row['beacons']<5)
 {
 	continue;
 }
+
+// Spruce up 
+if($row['count'] >= 100 && $dt > 30)
+{
+	array_push($class,"warning");
+}
+
+if($dt>60)
+{
+	array_push($class,"danger");
+}
 ?>
-<tr>
+<tr class="<?=implode(' ',$class)?>">
 <td><?=$row['room']?></td>
 <td><?=$row['count']?></td>
 <td><?=$row['grow']?></td>
