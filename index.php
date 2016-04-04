@@ -70,14 +70,20 @@ if($row['count'] >= 100 && $row['beacons']<5)
 }
 
 // Spruce up 
+// For 100+ rooms, we get enough beacons that >30 seconds may have merged
 if($row['count'] >= 100 && $dt > 30)
 {
 	array_push($class,"warning");
 }
-
+// If we haven't gotten a beacon in 60 seconds it almost certainly merged
 if($dt>60)
 {
 	array_push($class,"danger");
+}
+// Channels fromed in the last 2 minutes
+if(abs($time-$row['formation'])<120)
+{
+	array_push($class,"success");
 }
 ?>
 <tr class="<?=implode(' ',$class)?>">
