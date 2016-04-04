@@ -74,7 +74,7 @@ $totalAbstain += $row['novote'];
 <?endif;?>
 <td><?=prettyDeltaTime($row['reap']);?></td>
 <td><?=prettyDeltaTime($row['time']);?></td>
-</td>
+</tr>
 <?endforeach;?>
 <tr>
 <td><b>Table Sum</b></td>
@@ -83,9 +83,6 @@ $totalAbstain += $row['novote'];
 <td><?=$totalStay?></td>
 <td><?=$totalAbandon?></td>
 <td><?=$totalAbstain?></td>
-<td/>
-<td/>
-<td/>
 </tr>
 </tbody>
 </table>
