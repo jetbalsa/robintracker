@@ -65,8 +65,6 @@ if($row['count'] >= 100 && $row['beacons']<3)
 }
 ?>
 <tr>
-<!--<?=$row['guid']?>-->
-<!--<?=$row['beacons']?>-->
 <td><?=$row['room']?></td>
 <td><?=$row['count']?></td>
 <td><?=$row['grow']?></td>
