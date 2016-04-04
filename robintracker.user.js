@@ -3,7 +3,7 @@
 // @namespace    https://monstrouspeace.com
 // @version      1.00
 // @description  Contributes statistics data to https://monstrouspeace.com/robintracker/
-// @updateURL    https://github.com/jhon/robintracker/raw/master/robintracker.user.js
+// @updateURL    https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js
 // @author       /u/GuitarShirt
 // @match        https://www.reddit.com/robin*
 // ==/UserScript==
