@@ -88,6 +88,9 @@ if($row['count'] >= 100 && $row['beacons']<3)
 <td><?=$totalStay?></td>
 <td><?=$totalAbandon?></td>
 <td><?=$totalAbstain?></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>
