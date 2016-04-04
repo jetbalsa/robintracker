@@ -79,7 +79,7 @@ if($row['count'] >= 100 && $row['beacons']<3)
 <?endif;?>
 <td><?=prettyDeltaTime($row['reap']);?></td>
 <td><?=prettyDeltaTime($row['time']);?></td>
-</td>
+</tr>
 <?endforeach;?>
 <tr>
 <td><b>Table Sum</b></td>
@@ -88,9 +88,6 @@ if($row['count'] >= 100 && $row['beacons']<3)
 <td><?=$totalStay?></td>
 <td><?=$totalAbandon?></td>
 <td><?=$totalAbstain?></td>
-<td/>
-<td/>
-<td/>
 </tr>
 </tbody>
 </table>
