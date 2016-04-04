@@ -4,7 +4,7 @@ require_once "config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
-$data = $database->query("SELECT * FROM (SELECT * FROM `track` WHERE `count`>50 AND `time`>(UNIX_TIMESTAMP()-60) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC")->fetchAll();
+$data = $database->query("SELECT * FROM (SELECT * FROM `track` WHERE `count`>50 AND `time`>(UNIX_TIMESTAMP()-60) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC LIMIT 10")->fetchAll();
 ?>
 <html>
 <head>
