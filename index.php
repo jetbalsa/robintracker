@@ -134,10 +134,10 @@ if(abs($time-$row['formation'])<120)
 }
 ?>
 <tr class="<?=implode(' ',$class)?>">
-<!--<?=$row['guid']?>-->
-<td><b><?=$row['room']?></b></td>
+<!--<?=htmlspecialchars($row['guid'])?>-->
+<td><b><?=htmlspecialchars($row['room'])?></b></td>
 <td><?=$tier?></td>
-<td><?=$child0?>, <?=$child1?></td>
+<td><?=htmlspecialchars($child0)?>, <?=htmlspecialchars($child1)?></td>
 <td><?=$row['count']?></td>
 <td><?=$row['grow']?></td>
 <td><?=$row['stay']?></td>
