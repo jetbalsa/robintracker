@@ -233,5 +233,10 @@ if(!empty($database->error()[1]))
 // Write out the json dump
 $f = fopen(__DIR__."/../dump/pedigree.json",'w') or die("Unable to open pedigree.json");
 fwrite($f,json_encode($rooms));
-fclose($f)
+fclose($f);
+
+// Dump the PHP object
+$f = fopen(__DIR__."/../dump/pedigree.bin",'w') or die("Unable to open pedigree.json");
+fwrite($f,serialize($rooms));
+fclose($f);
 ?>
