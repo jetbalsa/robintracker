@@ -19,7 +19,7 @@ if($r==0)
 ?>
 <meta http-equiv="refresh" content="<?=$r?>">
 </head>
-<body>
+<body style="margin:16px;">
 <h1>Robin Tracker</h1>
 
 <table class='table table-striped'>
