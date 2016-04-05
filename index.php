@@ -29,7 +29,8 @@ if($r==0)
 </head>
 <body style="margin:16px;">
 <h1>Robin Tracker</h1>
-<span class='text-danger'>Tier data updates every 2 minutes and is probably wrong. You've been warned!</span>
+<span class='text-danger'>Tier data updates every 2 minutes and is probably wrong. You've been warned!</span><br />
+<span class='text-danger'>Want to see why I don't trust the tier data? Click the room to see the computed history!</span>
 <table class='table table-striped'>
 <thead><tr>
 <td><b>Room</b></td>
@@ -137,8 +138,7 @@ if(abs($time-$row['formation'])<120)
 }
 ?>
 <tr class="<?=implode(' ',$class)?>">
-<!--<?=htmlspecialchars($row['guid'])?>-->
-<td><b><?=htmlspecialchars($row['room'])?></b></td>
+<td><b><a href='graph.php?guid=<?=htmlspecialchars($row['guid'])?>'><?=htmlspecialchars($row['room'])?></a></b></td>
 <td><?=$tier?></td>
 <td><?=htmlspecialchars($child0)?>, <?=htmlspecialchars($child1)?></td>
 <td><?=$row['count']?></td>
