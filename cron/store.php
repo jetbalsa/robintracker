@@ -1,5 +1,5 @@
 <?php
-require_once "config.php";
+require_once __DIR__."/../config.php";
 $data = $database->query("SELECT max(`id`) as 'id' FROM `track` WHERE `time`<(UNIX_TIMESTAMP()-300)")->fetchAll();
 $id = $data[0]['id'];
 $database->query("INSERT INTO `track_storage` SELECT * FROM `track` WHERE `id`<='$id'");
