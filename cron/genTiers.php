@@ -4,7 +4,7 @@ require_once __DIR__."/../config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
-$data = $database->query("SELECT `ip`, `guid`, `room`, `count`, `formation`, `reap`, MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track_storage` WHERE `guid`!='' GROUP BY `ip`, `guid` ORDER BY `ip`, `start_time`")->fetchAll();
+$data = $database->query("SELECT `ip`, `guid`, `room`, `count`, `formation`, `reap`, MIN(`start_time`) as 'start_time', MAX(`end_time`) as 'end_time', SUM(`beacons`) as 'beacons' FROM (SELECT *, MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track_storage` WHERE `guid`!='' GROUP BY `ip`, `guid` UNION SELECT *, MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track` WHERE `guid`!='' GROUP BY `ip`, `guid`) AS A GROUP BY `ip`, `guid` ORDER BY `ip`, `start_time`");
 
 $rooms = array();
 $currentIP = '';
