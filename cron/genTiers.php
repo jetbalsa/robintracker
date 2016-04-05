@@ -94,6 +94,10 @@ function parseUserRooms($userRooms)
 		{
 			$currentTier = 4;
 		}
+		if($dt==1920 && $currentTier<5)
+		{
+			$currentTier = 5;
+		}
 
 		if($currentTier==1 || $rooms[$lastRoom]['tier']>$currentTier)
 		{
