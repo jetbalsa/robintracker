@@ -17,4 +17,4 @@ Do you want other information? File an issue letting me know what specific data 
 3. ???
 4. Profit
 
-![1](https://i.imgur.com/356mnqb.png)
+![1](https://i.imgur.com/qllMbMV.png)
