@@ -171,7 +171,7 @@ if(abs($time-$row['formation'])<120)
 </tr>
 </tbody>
 </table>
-Contribute data using the <a href='https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js'>Standalone Userscript</a> or by enabling contribution in a compatible script like <a href='https://github.com/vartan/robin-grow'>Robin-Grow</a> or <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin-Autovoter</a>.<br />
+Contribute data using the <a href='https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js'>Standalone Userscript</a> or by enabling contribution in a compatible script like <a href='https://github.com/5a1t/parrot'>Parrot</a>, <a href='https://github.com/vartan/robin-grow'>Robin-Grow</a> or <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin-Autovoter</a>.<br />
 Found an issue or want to contribute code? <a href='https://github.com/jhon/robintracker'>Visit the GitHub</a>.<br />
 Get the most out of Robin: <a href='https://www.reddit.com/r/joinrobin/comments/4d8dlp/guide_20_list_of_most_known_scripts_and_how_to_be/'>List of Most Known Scripts</a><br />
 Want more Robin data? Checkout the <a href='https://www.reddit.com/r/robintracking/comments/4czzo2/robin_chatter_leader_board_official/'>Official Leader Board</a> and <a href='http://robintree-apr3.s3-website-us-east-1.amazonaws.com/'>RobinTree</a>.<br />
