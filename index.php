@@ -89,18 +89,18 @@ $totalAbstains = 0;
 $time = time();
 $dt = abs($time-$row['time']);
 
-$totalUsers += $row['count'];
-$totalGrow += $row['grow'];
-$totalStay += $row['stay'];
-$totalAbandon += $row['abandon'];
-$totalAbstain += $row['novote'];
-
 $class = [];
 // Only report rooms with over 100 people if we have 5+ beacons
 if($row['count'] >= 100 && $row['beacons']<5)
 {
 	continue;
 }
+
+$totalUsers += $row['count'];
+$totalGrow += $row['grow'];
+$totalStay += $row['stay'];
+$totalAbandon += $row['abandon'];
+$totalAbstain += $row['novote'];
 
 // Retrieve Tier and Room information
 $tier = '?';
