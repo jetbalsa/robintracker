@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: mysql.monstrouspeace.com
--- Generation Time: Apr 04, 2016 at 07:30 PM
+-- Generation Time: Apr 04, 2016 at 09:38 PM
 -- Server version: 5.6.25-log
 -- PHP Version: 7.0.4
 
@@ -19,6 +19,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `mp_robin`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rooms`
+--
+
+CREATE TABLE `rooms` (
+  `guid` char(36) NOT NULL,
+  `room` char(10) NOT NULL,
+  `tier` int(2) NOT NULL,
+  `parent` char(36) DEFAULT NULL,
+  `child0` char(36) DEFAULT NULL,
+  `child1` char(36) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -65,6 +80,17 @@ CREATE TABLE `track_storage` (
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `rooms`
+--
+ALTER TABLE `rooms`
+  ADD PRIMARY KEY (`guid`),
+  ADD KEY `room` (`room`),
+  ADD KEY `parent` (`parent`),
+  ADD KEY `child0` (`child0`),
+  ADD KEY `child1` (`child1`),
+  ADD KEY `tier` (`tier`);
 
 --
 -- Indexes for table `track`

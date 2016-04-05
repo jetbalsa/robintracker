@@ -1,0 +1,230 @@
+<?php
+require_once __DIR__."/../config.php";
+
+$start_time = explode(' ',microtime());
+$start_time = $start_time[0] + $start_time[1];
+
+$data = $database->query("SELECT `ip`, `guid`, `room`, `count`, `formation`, `reap`, MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track_storage` WHERE `guid`!='' GROUP BY `ip`, `guid` ORDER BY `ip`, `start_time`")->fetchAll();
+
+$rooms = array();
+$currentIP = '';
+$userRooms = array();
+$rejectedUsers = 0;
+
+// Validate this user's data looks legit
+//   In practice, it means that they were only
+//   contributing data for one room
+function validateUser($userRooms)
+{
+	$length = count($userRooms);
+	for($i=0;$i<$length;$i++)
+	{
+		$start = $userRooms[$i]['start_time'];
+		$end = $userRooms[$i]['end_time'];
+
+		$beacon_max = (($end - $start)/60)+1;
+		$beacon_min = intval($beacon_max*0.2);
+
+		// Throw away entries from users who were intermittently contributing
+		//   The most likely case is someone using multiple alt accounts
+		$beacons = $userRooms[$i]['beacons'];
+		if($beacons < $beacon_min)
+		{
+			return false;
+		}
+
+		// Check for overlapping times for this user (again users contributing
+		//   stats from multiple accounts)
+		for($j=$i;$j<$length;$j++)
+		{
+			$time = $userRooms[$j]['start_time'];
+			if($time>$start && $time<$end)
+			{
+				return false;
+			}
+		}
+	}
+	return true;	
+}
+
+// Look through all the rooms for a single user
+function parseUserRooms($userRooms)
+{
+	global $rooms, $rejectedUsers;
+	$currentTier = 1;
+
+	if(!validateUser($userRooms))
+	{
+		$rejectedUsers++;
+		return;
+	}
+
+	foreach($userRooms as $row)
+	{
+		$ip = $row['ip'];
+		$guid = $row['guid'];
+		$room = $row['room'];
+		$start_time = $row['start_time'];
+		$end_time = $row['end_time'];
+		$count = $row['count'];
+		$ft = $row['formation'];
+		$rt = $row['reap'];
+
+		// User based tiering
+		if($count==2)
+		{
+			$currentTier = 1;
+		}
+
+		// Time based tiering
+		$dt = $rt-$ft;
+		if($dt==120)
+		{
+			$currentTier = 1;
+		}
+		if($dt==240)
+		{
+			$currentTier = 2;
+		}
+		if($dt==480)
+		{
+			$currentTier = 3;
+		}
+		if($dt==960)
+		{
+			$currentTier = 4;
+		}
+
+		if($currentTier==1 || $rooms[$lastRoom]['tier']>$currentTier)
+		{
+			$currentTier = 1;
+			$lastRoom = "";
+		}
+
+		if(!array_key_exists($guid,$rooms))
+		{
+			$rooms[$guid] = array(
+				"guid" => $guid,
+				"room" => $room,
+				"end_time" => $end_time,
+				"tier" => $currentTier,
+				"children" => [],
+				"parent" => array()
+			);
+		}
+		if(!empty($lastRoom))
+		{
+			//$rooms[$lastRoom]['parent'] = $guid;
+			//array_push($rooms[$lastRoom]['parent'],$guid);
+			//if(!in_array($lastRoom,$rooms[$guid]['children']))
+			{
+				array_push($rooms[$guid]['children'],$lastRoom);
+			}
+		}
+		if($rooms[$guid]['end_time'] < $end_time)
+		{
+			$rooms[$guid]['room'] = $room;
+			$rooms[$guid]['end_time'] = $end_time;
+		}
+		if($rooms[$guid]['tier'] < $currentTier)
+		{
+			$rooms[$guid]['tier'] = $currentTier;
+		}
+
+		$lastRoom = $guid;
+		$currentTier++;
+	}	
+}
+
+// Loop and collect by user
+foreach($data as $row) {
+	$ip = $row['ip'];
+
+	if($currentIP != $ip)
+	{
+		parseUserRooms($userRooms);
+		$userRooms = array();
+		$currentIP = $ip;
+	}
+
+	array_push($userRooms,$row);
+}
+
+// Do some post-processing to select parents/children
+//   our algorithm here is just to take the most
+//   common entry (simple and easy)
+foreach($rooms as $r)
+{
+	$children = array_count_values($r['children']);
+	asort($children);
+	$children = array_slice(array_keys($children),count($children)-2);
+	$rooms[$r['guid']]['children'] = $children;
+
+	for($i=0;$i<count($children);$i++)
+	{
+		array_push($rooms[$children[$i]]['parent'],$r['guid']);
+	}
+}
+foreach($rooms as $r)
+{
+	$parents = array_count_values($r['parent']);
+	asort($parents);
+	end($parents);
+	$rooms[$r['guid']]['parent'] = key($parents);
+}
+
+// List of all GUIDs without parents
+function isOrphan($var)
+{
+	return is_null($var['parent']);
+}
+$toprocess = array_keys(array_filter($rooms,isOrphan));
+
+// Using these as our top, go through the rest of the list
+//   adding children as we go
+while(count($toprocess)!=0)
+{
+	$guid = array_shift($toprocess);
+	foreach($rooms[$guid]['children'] as $child)
+	{
+		if($rooms[$child]['tier']<$rooms[$guid]['tier']-1)
+		{
+			$rooms[$child]['tier'] = $rooms[$guid]['tier']-1;
+			array_push($toprocess,$child);
+		}
+	}
+}
+
+// MEDOO doesn't provide a way for us to do what we want here
+//  $database->replace is actually an UPDATE query.
+
+// Turn each member of the list into just whats
+//   necessary for insertion
+function readyForInsert($r)
+{
+	global $database;
+
+	asort($r['children']);
+	for($i=count($r['children']);$i<=2;$i++)
+	{
+		$r['children'][$i] = null;
+	}
+
+	$guid = $database->quote($r['guid']);
+	$room = $database->quote($r['room']);
+	$tier = $database->quote($r['tier']);
+	$parent = $database->quote($r['parent']);
+	$child0 = $database->quote($r['children'][0]);
+	$child1 = $database->quote($r['children'][1]);
+
+	return "($guid,$room,$tier,$parent,$child0,$child1)";
+}
+
+$data = array_map(readyForInsert,array_values($rooms));
+$data = implode(",",$data);
+$database->query("REPLACE INTO `rooms` (`guid`,`room`,`tier`,`parent`,`child0`,`child1`) VALUES $data;");
+if(!empty($database->error()[1]))
+{
+	print_r($database->error());
+}
+?>

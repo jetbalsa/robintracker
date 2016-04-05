@@ -5,6 +5,14 @@ $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
 $data = $database->query("SELECT *, COUNT(*) AS 'beacons', MAX(`time`) as 'time' FROM (SELECT * FROM `track` WHERE `count`>50 AND `time`>(UNIX_TIMESTAMP()-120) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC LIMIT 10")->fetchAll();
+
+// Someone with better SQL knowlege might be able to do all this in one query, but since
+//   we're relying on a derived table above right now we'll just make this two queries
+function getGuid($r) { return $r['guid']; }
+$guids = array_map(getGuid, $data);
+$rooms = $database->select('rooms',['guid','room','tier','parent','child0','child1'],['OR'=>['guid'=>$guids,'parent'=>$guids]]);
+$guids = array_map(getGuid, $rooms);
+$rooms = array_combine($guids,$rooms);
 ?>
 <html>
 <head>
@@ -21,15 +29,17 @@ if($r==0)
 </head>
 <body style="margin:16px;">
 <h1>Robin Tracker</h1>
-
+<span class='text-danger'>Tier data updates every 2 minutes and is probably wrong. You've been warned!</span>
 <table class='table table-striped'>
 <thead><tr>
 <td><b>Room</b></td>
+<td><b>Tier</b></td>
+<td><b>Constituent Rooms</b></td>
 <td><b>Total</b></td>
 <td><b>Grow</b></td>
 <td><b>Stay</b></td>
 <td><b>Abandon</b></td>
-<td><b>Abstains</b></td>
+<td><b>Abstain</b></td>
 <td>
 <b>Founded</b>
 <?php
@@ -45,7 +55,7 @@ else
 }
 $queryString .= $label;
 ?>
-( <a href='<?=$queryString?>'>show <?=$label?></a> )
+( <a href='<?=$queryString?>'><?=$label?></a> )
 </td>
 <td><b>Reaping</b></td>
 <td><b>Updated</b></td>
@@ -92,6 +102,20 @@ if($row['count'] >= 100 && $row['beacons']<5)
 	continue;
 }
 
+// Retrieve Tier and Room information
+$tier = '?';
+$child0 = '??';
+$child1 = '??';
+if(!empty(@$rooms[$row['guid']]))
+{
+	$room = $rooms[$row['guid']];
+	$tier = $room['tier'];
+	$child0 = $rooms[$room['child0']];
+	$child1 = $rooms[$room['child1']];
+	$child0 = empty($child0)?"??":$child0['room'];
+	$child1 = empty($child1)?"??":$child1['room'];
+}
+
 // Spruce up 
 // For 100+ rooms, we get enough beacons that >30 seconds may have merged
 if($time > $row['reap'] && $row['count'] >= 100 && $dt > 30)
@@ -111,7 +135,9 @@ if(abs($time-$row['formation'])<120)
 ?>
 <tr class="<?=implode(' ',$class)?>">
 <!--<?=$row['guid']?>-->
-<td><?=$row['room']?></td>
+<td><b><?=$row['room']?></b></td>
+<td><?=$tier?></td>
+<td><?=$child0?>, <?=$child1?></td>
 <td><?=$row['count']?></td>
 <td><?=$row['grow']?></td>
 <td><?=$row['stay']?></td>
@@ -128,7 +154,9 @@ if(abs($time-$row['formation'])<120)
 </tr>
 <?endforeach;?>
 <tr>
-<td><b>Table Sum</b></td>
+<td></td>
+<td></td>
+<td style="text-align: right"><b>Table Sum</b></td>
 <td><?=$totalUsers?></td>
 <td><?=$totalGrow?></td>
 <td><?=$totalStay?></td>
