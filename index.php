@@ -29,8 +29,8 @@ if($r==0)
 </head>
 <body style="margin:16px;">
 <h1>Robin Tracker</h1>
-<span class='text-danger'>Tier data updates every 2 minutes and is probably wrong. You've been warned!</span><br />
-<span class='text-danger'>Want to see why I don't trust the tier data? Click the room to see the computed history!</span>
+<p>Tier data updates every 2 minutes.</p>
+<p class='text-danger'>Want to see why I don't trust the tier data? Click the room to see the computed history!</p>
 <table class='table table-striped'>
 <thead><tr>
 <td><b>Room</b></td>
