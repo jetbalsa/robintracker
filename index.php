@@ -148,7 +148,7 @@ if(abs($time-$row['formation'])<120)
 <td><?=$row['novote']?></td>
 <?if(@$_GET['ft']=='absolute'):?>
 <?date_default_timezone_set("America/New_York")?>
-<td><?=date("m-d-Y H:i T",$row['formation']);?></td>
+<td><?=date("Y-m-d H:i T",$row['formation']);?></td>
 <?else:?>
 <td><?=prettyDeltaTime($row['formation']);?></td>
 <?endif;?>
