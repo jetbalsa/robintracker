@@ -13,4 +13,4 @@ I want to add APIs to query data out of the database. If there's a specific set 
 3. ???
 4. Profit
 
-![1](https://i.imgur.com/Tc7vSur.png)
+![1](https://i.imgur.com/356mnqb.png)
