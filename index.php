@@ -68,10 +68,13 @@ function prettyDeltaTime($reference)
 	$time = time();
 	$dt = abs($reference - $time);
 
-	$minutes = floor(($dt - ($hours*60))/60);
-	$seconds = $dt - (($minutes + ($hours*60)) * 60);
+	$minutes = floor($dt/60);
+	$seconds = $dt - ($minutes * 60);
 
-	return $minutes . "m" . $seconds . "s " . (($reference > $time)?"from now":"ago");
+	$hours = floor($minutes/60);
+	$minutes = $minutes - ($hours*60);
+
+	return (empty($hours)?"":($hours . "h")) . $minutes . "m" . $seconds . "s " . (($reference > $time)?"from now":"ago");
 }
 ?>
 
