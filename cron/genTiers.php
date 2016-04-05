@@ -220,11 +220,18 @@ function readyForInsert($r)
 	return "($guid,$room,$tier,$parent,$child0,$child1)";
 }
 
+// This goes into the database
 $data = array_map(readyForInsert,array_values($rooms));
 $data = implode(",",$data);
 $database->query("REPLACE INTO `rooms` (`guid`,`room`,`tier`,`parent`,`child0`,`child1`) VALUES $data;");
 if(!empty($database->error()[1]))
 {
 	print_r($database->error());
+	die();
 }
+
+// Write out the json dump
+$f = fopen(__DIR__."/../dump/pedigree.json",'w') or die("Unable to open pedigree.json");
+fwrite($f,json_encode($rooms));
+fclose($f)
 ?>

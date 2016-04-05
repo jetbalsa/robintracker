@@ -5,7 +5,8 @@ Simple PHP scripts for running a leaderboard
 Just install the Userscript! https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js
 
 ## Want data for visualizations?
-I want to add APIs to query data out of the database. If there's a specific set of data you're interested in, file an issue!
+Currently, the pedigree information the tracker generates is available here: https://monstrouspeace.com/robintracker/dump/pedigree.json
+Do you want other information? File an issue letting me know what specific data you're interested in!
 
 ## Want to setup your own server?
 1. Setup a database with the table layout in schema.sql
