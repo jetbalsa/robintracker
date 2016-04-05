@@ -17,6 +17,7 @@ $rejectedUsers = 0;
 function validateUser($userRooms)
 {
 	$length = count($userRooms);
+	$lastEnd = 0;
 	for($i=0;$i<$length;$i++)
 	{
 		$start = $userRooms[$i]['start_time'];
@@ -26,7 +27,7 @@ function validateUser($userRooms)
 		$beacon_min = intval($beacon_max*0.2);
 
 		// Throw away entries from users who were intermittently contributing
-		//   The most likely case is someone using multiple alt accounts
+		//   The most likely case is someone using multiple alt accounts or NAT
 		$beacons = $userRooms[$i]['beacons'];
 		if($beacons < $beacon_min)
 		{
@@ -51,13 +52,15 @@ function validateUser($userRooms)
 function parseUserRooms($userRooms)
 {
 	global $rooms, $rejectedUsers;
-	$currentTier = 1;
 
 	if(!validateUser($userRooms))
 	{
 		$rejectedUsers++;
 		return;
 	}
+
+	$currentTier = 1;
+	$lastEndTime = 0;
 
 	foreach($userRooms as $row)
 	{
@@ -69,6 +72,16 @@ function parseUserRooms($userRooms)
 		$count = $row['count'];
 		$ft = $row['formation'];
 		$rt = $row['reap'];
+
+		// Specifically fixes the invalid HoMi-Pcdbe to Gai_smOrWr transition
+		//  My guess is that this is related to DHCP assigning an existing
+		//  contributor a new IP address
+		// If there was an hour break between these two rooms: reset
+		if($lastEndTime!=0 && $start_time - $lastEndTime > 60*60)
+		{
+			$currentTier = 1;
+			$lastRoom = "";
+		}
 
 		// User based tiering
 		if($count==2)
@@ -136,6 +149,7 @@ function parseUserRooms($userRooms)
 		}
 
 		$lastRoom = $guid;
+		$lastEndTime = $end_time;
 		$currentTier++;
 	}	
 }
