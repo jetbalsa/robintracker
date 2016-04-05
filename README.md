@@ -7,6 +7,8 @@ Just install the Userscript! https://raw.githubusercontent.com/jhon/robintracker
 ## Want data for visualizations?
 Currently, the pedigree information the tracker generates is available here: https://monstrouspeace.com/robintracker/dump/pedigree.json
 
+There is also a JSON endpoint for the current leaderboard information here: https://monstrouspeace.com/robintracker/json.php
+
 Do you want other information? File an issue letting me know what specific data you're interested in!
 
 ## Want to setup your own server?
