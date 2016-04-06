@@ -242,6 +242,7 @@ while(count($toprocess)!=0)
 		if($rooms[$child]['tier']<$rooms[$guid]['tier']-1)
 		{
 			$rooms[$child]['tier'] = $rooms[$guid]['tier']-1;
+			$rooms[$child]['parent'] = $guid;
 			array_push($toprocess,$child);
 		}
 	}
