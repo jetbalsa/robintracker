@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Robin Tracker
 // @namespace    https://monstrouspeace.com
-// @version      1.01
+// @version      1.02
 // @description  Contributes statistics data to https://monstrouspeace.com/robintracker/
 // @updateURL    https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js
 // @author       /u/GuitarShirt
@@ -128,10 +128,10 @@ function generateStatisticsQuery()
     // For the initial update, just use the values baked into the DOM
     updateStatistics(r.config);
 
-    // Trigger the update to robintracker every 60 seconds
+    // Trigger the update to robintracker every 5 minutes
     //  This is at a 5 second delay so we don't make two stats requests
     //  at the same time when used with scripts setup to query every 10 seconds
     setTimeout(function(){
-        setInterval(generateStatisticsQuery, 60 * 1000);
+        setInterval(generateStatisticsQuery, 5 * 60 * 1000);
     },5 * 1000);
 })();
