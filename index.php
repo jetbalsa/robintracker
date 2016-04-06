@@ -87,6 +87,7 @@ $totalAbandon = 0;
 $totalAbstains = 0;
 $totalBeacons = 0;
 $roomCount = 0;
+$tierCounts = array();
 ?>
 
 <?foreach($data as $row):?>
@@ -103,11 +104,6 @@ if($dt>120)
 // Count the number of updates
 $totalBeacons += $row['beacons'];
 $roomCount++;
-
-if($roomCount>10 || $row['count']<50)
-{
-	continue;
-}
 
 $class = [];
 // Only report rooms with over 100 people if we have 5+ beacons
@@ -152,6 +148,22 @@ if(abs($time-$row['formation'])<120)
 {
 	array_push($class,"success");
 }
+
+// Add tier stat info:
+if($time < $row['reap'] || ($dt < 60 && $row['count'] < 100) || $dt < 30)
+{
+	if(empty(@$tierCounts[$tier]))
+	{
+		$tierCounts[$tier] = 0;
+	}
+	$tierCounts[$tier]++;
+}
+
+if($roomCount>10 || $row['count']<50)
+{
+	continue;
+}
+
 ?>
 <tr class="<?=implode(' ',$class)?>">
 <td><b><a href='graph.php?guid=<?=htmlspecialchars($row['guid'])?>'><?=htmlspecialchars($row['room'])?></a></b></td>
@@ -184,6 +196,28 @@ if(abs($time-$row['formation'])<120)
 <td></td>
 <td></td>
 <td></td>
+</tr>
+<?
+$newRooms = 0.5;
+for($i=17;$i>0;$i--)
+{
+	$newRooms *= 2;
+	$roomsAtTier = 0;
+	if(!empty(@$tierCounts[$i]))
+	{
+		$roomsAtTier = $tierCounts[$i];
+	}
+	$newRooms -= $roomsAtTier;
+	if($i==8) $newRoomsT8 = $newRooms;
+}
+$newRoomsT1 = $newRooms
+?>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align: right"><b>New T8s Needed For T17</b></td>
+<td><?=$newRoomsT8?></td>
+<td colspan='7' class='text-danger'>This may be <b>inaccurate</b> during merges.</td>
 </tr>
 </tbody>
 </table>
