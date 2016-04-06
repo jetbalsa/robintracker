@@ -61,6 +61,7 @@ function parseUserRooms($userRooms)
 
 	$currentTier = 1;
 	$lastEndTime = 0;
+	$lastCount = 0;
 
 	foreach($userRooms as $row)
 	{
@@ -86,6 +87,15 @@ function parseUserRooms($userRooms)
 			$currentTier = 1;
 			$lastRoom = "";
 		}
+
+		// We need to change the query to order by time before we can do this
+		/*
+		if($count < $lastCount)
+		{
+			$currentTier = 1;
+			$lastRoom = "";
+		}
+		*/
 
 		// User based tiering
 		if($count==2)
@@ -173,6 +183,7 @@ function parseUserRooms($userRooms)
 
 		$lastRoom = $guid;
 		$lastEndTime = $end_time;
+		$lastCount = $count;
 		$currentTier++;
 	}	
 }
