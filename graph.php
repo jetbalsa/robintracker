@@ -79,6 +79,7 @@ while(count($nodes))
     {
         $parent = $data[$n['parent']]['room'].' ('.$data[$n['parent']]['tier'].')';
     }
+    echo "            //".$n['guid']."\n";
     echo "            {\n";
     echo "                name: '".$name."',\n";
     echo "                parent: '".$parent."',\n";
