@@ -4,7 +4,7 @@ require_once "config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
-$data = $database->query("SELECT *, COUNT(*) AS 'beacons', MAX(`time`) as 'time' FROM (SELECT * FROM `track` WHERE `count`>50 AND `time`>(UNIX_TIMESTAMP()-120) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC LIMIT 10")->fetchAll();
+$data = $database->query("SELECT *, COUNT(*) AS 'beacons', MAX(`time`) as 'time' FROM `track` WHERE `time`>(UNIX_TIMESTAMP()-120) AND `guid`!='' GROUP BY `guid` ORDER BY `count` DESC;")->fetchAll();
 
 // Someone with better SQL knowlege might be able to do all this in one query, but since
 //   we're relying on a derived table above right now we'll just make this two queries
@@ -85,13 +85,29 @@ $totalUsers = 0;
 $totalGrow = 0;
 $totalAbandon = 0;
 $totalAbstains = 0;
+$totalBeacons = 0;
+$roomCount = 0;
 ?>
 
 <?foreach($data as $row):?>
 <?php
-// If the last update for this was actually >60s, bail
+// Calculate time deltas
 $time = time();
 $dt = abs($time-$row['time']);
+
+if($dt>120)
+{
+	continue;
+}
+
+// Count the number of updates
+$totalBeacons += $row['beacons'];
+$roomCount++;
+
+if($roomCount>10 || $row['count']<50)
+{
+	continue;
+}
 
 $class = [];
 // Only report rooms with over 100 people if we have 5+ beacons
@@ -176,12 +192,7 @@ Found an issue or want to contribute code? <a href='https://github.com/jhon/robi
 Get the most out of Robin: <a href='https://www.reddit.com/r/joinrobin/comments/4d8dlp/guide_20_list_of_most_known_scripts_and_how_to_be/'>List of Most Known Scripts</a><br />
 Want more Robin data? Checkout the <a href='https://www.reddit.com/r/robintracking/comments/4czzo2/robin_chatter_leader_board_official/'>Official Leader Board</a> and <a href='http://robintree-apr3.s3-website-us-east-1.amazonaws.com/'>RobinTree</a>.<br />
 <br />
-<?php
-$data = $database->query("SELECT COUNT(`id`) as `count`, COUNT(DISTINCT `guid`) as `rooms` FROM `track` WHERE `time`>(UNIX_TIMESTAMP()-60)")->fetchAll();
-$ppm = $data[0]['count'];
-$rooms = $data[0]['rooms'];
-?>
-<?=$ppm?> updates for <?=$rooms?> rooms in the last minute |
+<?=intval($totalBeacons/2)?> updates for <?=$roomCount?> rooms in the last minute |
 <?php
 $end_time = explode(' ',microtime());
 $total_time = ($end_time[0] + $end_time[1]) - $start_time;
