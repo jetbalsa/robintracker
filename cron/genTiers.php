@@ -4,7 +4,7 @@ require_once __DIR__."/../config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
-$data = $database->query("SELECT `ip`, `guid`, `room`, `count`, `formation`, `reap`, MIN(`start_time`) as 'start_time', MAX(`end_time`) as 'end_time', SUM(`beacons`) as 'beacons' FROM (SELECT *, MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track_storage` WHERE `guid`!='' GROUP BY `ip`, `guid` UNION SELECT *, MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track` WHERE `guid`!='' GROUP BY `ip`, `guid`) AS A GROUP BY `ip`, `guid` ORDER BY `ip`, `start_time`");
+$data = $database->query("SELECT `ip`, `guid`, `room`, `count`, `grow`, `stay`, `abandon`, `novote`, `formation`, `reap`, MIN(`start_time`) as 'start_time', MAX(`end_time`) as 'end_time', SUM(`beacons`) as 'beacons' FROM (SELECT *, MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track_storage` WHERE `guid`!='' GROUP BY `ip`, `guid` UNION SELECT *, MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track` WHERE `guid`!='' GROUP BY `ip`, `guid`) AS A GROUP BY `ip`, `guid` ORDER BY `ip`, `start_time`");
 
 $rooms = array();
 $currentIP = '';
@@ -70,6 +70,10 @@ function parseUserRooms($userRooms)
 		$start_time = $row['start_time'];
 		$end_time = $row['end_time'];
 		$count = $row['count'];
+		$grow = $row['grow'];
+		$stay = $row['stay'];
+		$abandon = $row['abandon'];
+		$novote = $row['novote'];
 		$ft = $row['formation'];
 		$rt = $row['reap'];
 
@@ -123,6 +127,14 @@ function parseUserRooms($userRooms)
 			$rooms[$guid] = array(
 				"guid" => $guid,
 				"room" => $room,
+				"count" => $count,
+				"grow" => $grow,
+				"stay" => $stay,
+				"abandon" => $abandon,
+				"novote" => $novote,
+				"formation_time" => $ft,
+				"reap_time" => $rt,
+				"start_time" => $start_time,
 				"end_time" => $end_time,
 				"tier" => $currentTier,
 				"children" => [],
@@ -141,7 +153,18 @@ function parseUserRooms($userRooms)
 		if($rooms[$guid]['end_time'] < $end_time)
 		{
 			$rooms[$guid]['room'] = $room;
+			$rooms[$guid]['count'] = $count;
+			$rooms[$guid]['grow'] = $grow;
+			$rooms[$guid]['stay'] = $stay;
+			$rooms[$guid]['abandon'] = $abandon;
+			$rooms[$guid]['novote'] = $novote;
+			$rooms[$guid]['formation_time'] = $ft;
+			$rooms[$guid]['reap_time'] = $rt;
 			$rooms[$guid]['end_time'] = $end_time;
+		}
+		if($rooms[$guid]['start_time'] > $start_time)
+		{
+			$rooms[$guid]['start_time'] = $start_time;
 		}
 		if($rooms[$guid]['tier'] < $currentTier)
 		{
