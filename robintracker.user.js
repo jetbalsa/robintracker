@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Robin Tracker
 // @namespace    https://monstrouspeace.com
-// @version      1.00
+// @version      1.01
 // @description  Contributes statistics data to https://monstrouspeace.com/robintracker/
 // @updateURL    https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js
 // @author       /u/GuitarShirt
