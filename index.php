@@ -216,7 +216,7 @@ $newRoomsT1 = $newRooms
 <td></td>
 <td></td>
 <td style="text-align: right"><b>New T8s Needed For T17</b></td>
-<td><?=$newRoomsT8?></td>
+<td><?=($newRoomsT8>0)?$newRoomsT8:"<b>None!</b>"?></td>
 <td colspan='7' class='text-danger'>This may be <b>inaccurate</b> during merges.</td>
 </tr>
 </tbody>
