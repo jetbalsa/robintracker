@@ -1,6 +1,7 @@
 <?php
 require_once "config.php";
 
+header('Access-Control-Allow-Origin: *');  
 header('Content-Type: application/json');
 
 $data = $database->query("SELECT *, COUNT(*) AS 'beacons', MAX(`time`) as 'time' FROM (SELECT * FROM `track` WHERE  `time`>(UNIX_TIMESTAMP()-120) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC")->fetchAll();
