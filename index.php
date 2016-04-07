@@ -1,5 +1,5 @@
 <?php
-require_once "config.php";
+require_once __DIR__."/config.php";
 
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
