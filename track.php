@@ -9,8 +9,8 @@ if(empty(@$_GET['id'])){ die(); }
 if(in_array(@$_SERVER['REMOTE_ADDR'],$banlist)){ die(); }
 
 // FIXME: Don't hardcode this
-// Next merge should be around 5000 and will probably take a while.
-if (intval(@$_GET['count']>6000) || intval(@$_GET['count'])<0) { die(); }
+// If all tracked users make it to T17, it'll be around 7000
+if (intval(@$_GET['count']>8000) || intval(@$_GET['count'])<0) { die(); }
 
 // Basic data validation
 if (intval(@$_GET['count']) != (intval(@$_GET['gr'])+intval(@$_GET['st'])+intval(@$_GET['ab'])+intval(@$_GET['nv']))) { die(); }
