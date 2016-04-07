@@ -128,6 +128,7 @@ $totalAbstains = 0;
 $totalBeacons = 0;
 $roomCount = 0;
 $tierCounts = array();
+$tierReadiness = array();
 
 $lastTier = 17;
 $roomsNeeded = 1;
@@ -193,8 +194,13 @@ if($time < $row['reap'] || ($dt < 60 && $row['count'] < 100) || $dt < 30)
 	if(empty(@$tierCounts[$tier]))
 	{
 		$tierCounts[$tier] = 0;
+		$tierReadiness[$tier] = $row['reap']-$time;
 	}
 	$tierCounts[$tier]++;
+	if($tierReadiness[$tier] < $row['reap']-$time)
+	{
+		$tierReadiness[$tier] = $row['reap']-$time;
+	}
 }
 
 if($roomCount>10 || $row['count']<50)
@@ -215,7 +221,11 @@ $lastTier = $tier;
 $roomsNeeded = $roomsNeeded * pow(2,$deltaTier);
 $roomsNeeded -= 1;
 }
-if($roomsNeeded<0 && !$wroteT17Line && $tier!=17):
+if($tier>=17)
+{
+$wroteT17Line = true;
+}
+if($roomsNeeded<0 && !$wroteT17Line && $tier<17):
 $wroteT17Line = true;
 ?>
 <tr>
@@ -260,6 +270,44 @@ $(document).ready(function() {
 <td></td>
 <td></td>
 <td></td>
+</tr>
+</tr>
+<?
+$newRooms = 0.5;
+$count = 0;
+for($i=17;$i>0;$i--)
+{
+	$newRooms *= 2;
+	$roomsAtTier = 0;
+	if(!empty(@$tierCounts[$i]))
+	{
+		$roomsAtTier = $tierCounts[$i];
+	}
+	if(!empty(@$tierReadiness[$i]) && $tierReadiness[$i]>0)
+	{
+		$count += $tierReadiness[$i] + (60 * 3);
+	}
+	else
+	{
+		$count += 35 * 60;
+	}
+	$newRooms -= $roomsAtTier;
+	if($newRooms <= 0) break;
+}
+// The above loop measures the time to T17 reaping
+$count -= 35*60;
+?>
+<tr>
+<td></td>
+<td></td>
+<td style="text-align: right"><b>Time to T17</b></td>
+<?if($count>120):?>
+<td colspan='2'><?=prettyDeltaTime($time+$count)?></td>
+<td colspan='6' class='text-danger'>This may be <b>inaccurate</b>.</td>
+<?else:?>
+<td colspan='2' class='text-success'><b>Imminent!</b></td>
+<td colspan='6' class='text-success'><!--<b>Insert Joke Here</b>--></td>
+<?endif;?>
 </tr>
 </tbody>
 </table>
