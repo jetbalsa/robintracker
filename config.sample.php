@@ -11,4 +11,7 @@ $database = new medoo([
 	'password'      => '',
 	'charset'       => 'utf8',
 ]);
+
+$header = "";
+$footer = "";
 ?>

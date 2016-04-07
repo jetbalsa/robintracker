@@ -69,8 +69,7 @@ $(document).ready(function() {
 </head>
 <body style="margin:16px;">
 <h1>Robin Tracker</h1>
-<p>Tier data updates every 3 minutes.</p>
-<p class='text-info'>We here at RobinTracker only use bargain-bin heuristics. Sometimes they can get a little creative, but the tier data is <i>eventually</i> accurate.</p>
+<?=$header?>
 <table class='table table-striped'>
 <thead><tr>
 <td><b>Room</b></td>
