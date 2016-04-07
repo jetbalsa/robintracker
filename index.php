@@ -31,6 +31,7 @@ $rooms = array_combine($guids,$rooms);
 <html>
 <head>
 <title>RobinTracker</title>
+<link rel='shortcut icon' id='robin-icon' type='image/png' href='robin.png' />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <?php
 $r = intval(@$_GET['r']);
@@ -44,7 +45,8 @@ if($r==0)
 <body style="margin:16px;">
 <h1>Robin Tracker</h1>
 <p>Tier data updates every 2 minutes.</p>
-<p class='text-danger'>Want to see why I don't trust the tier data? Click the room to see the computed history!</p>
+<p class='text-info'>Want to see why I don't trust the tier data? Click the room to see the computed history!</p>
+<p class='text-danger'>Uh, everything's under control. Situation normal. Uh, we had a slight weapons malfunction, but uh... everything's perfectly all right now. We're fine. We're all fine here now. Thank you. How are you?</p>
 <table class='table table-striped'>
 <thead><tr>
 <td><b>Room</b></td>

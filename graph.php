@@ -14,6 +14,7 @@ $guid = htmlspecialchars(@$_GET['guid']);
 <html>
 <head>
     <title>RobinGrapher: <?=$data[$guid]['room']?></title>
+    <link rel='shortcut icon' id='robin-icon' type='image/png' href='robin.png' />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
