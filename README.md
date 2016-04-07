@@ -1,15 +1,14 @@
 # Robin Tracker
-Simple PHP scripts for running a leaderboard
-
-## Want to contribute statistics?
-Just install the Userscript! https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js
+Thanks to everyone who used and supported the leaderboard over the last week. It's been a fun ride!
 
 ## Want data for visualizations?
-Currently, the pedigree information the tracker generates is available here: https://monstrouspeace.com/robintracker/dump/pedigree.json
+The tier and pedigree information is already available here: https://monstrouspeace.com/robintracker/dump/pedigree.json
 
-There is also a JSON endpoint for the current leaderboard information here: https://monstrouspeace.com/robintracker/json.php
+I will be creating and uploading a MySQL dump tomorrow (check back)!
 
 Do you want other information? File an issue letting me know what specific data you're interested in!
+
+## Thank you to everyone who contributed statistics!
 
 ## Want to setup your own server?
 1. Setup a database with the table layout in schema.sql
