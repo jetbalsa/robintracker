@@ -69,7 +69,7 @@ $(document).ready(function() {
 </head>
 <body style="margin:16px;">
 <h1>Robin Tracker</h1>
-<p>Tier data updates every 2 minutes.</p>
+<p>Tier data updates every 3 minutes.</p>
 <p class='text-danger'>Want to see why I don't trust the tier data? Click the room to see the computed history!</p>
 <table class='table table-striped'>
 <thead><tr>
