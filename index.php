@@ -33,6 +33,8 @@ $rooms = array_combine($guids,$rooms);
 <title>RobinTracker</title>
 <link rel='shortcut icon' id='robin-icon' type='image/png' href='robin.png' />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <?php
 $r = intval(@$_GET['r']);
 if($r==0)
@@ -41,6 +43,29 @@ if($r==0)
 }
 ?>
 <meta http-equiv="refresh" content="<?=$r?>">
+<script type='application/javascript'>
+function triggerMergeNotification(roomName,userCount)
+{
+	lastMerge = $.cookie('lastMerge'+roomName);
+	time = Math.floor(Date.now()/1000);
+	dt = Math.floor(time) - lastMerge;
+	if(dt<60) {
+		return;
+	}
+	if($("input[name='showNotifications']").is(":checked"))
+	{
+		$.cookie('lastMerge'+roomName,time);
+		var n = new Notification('Robin Tracker',{
+			icon: $('#robin-icon').attr('href'),
+			body: 'New Room: ' + roomName + ' (' + userCount + ' users)',
+		});
+	}
+}
+$(document).ready(function() {
+	$("input[name='showNotifications']").prop('checked',$.cookie('notify')==="true");
+	requestPermission($.cookie('notify')==="true");
+});
+</script>
 </head>
 <body style="margin:16px;">
 <h1>Robin Tracker</h1>
@@ -181,6 +206,13 @@ if($roomCount>10 || $row['count']<50)
 }
 
 ?>
+<?if($row['count'] > 50 && abs($time-$row['formation'])<60):?>
+<script type='application/javascript'>
+$(document).ready(function() {
+	triggerMergeNotification("<?=htmlspecialchars($row['room'])?>",<?=$row['count']?>);
+});
+</script>
+<?endif;?>
 <tr class="<?=implode(' ',$class)?>">
 <td><b><a href='graph.php?guid=<?=htmlspecialchars($row['guid'])?>'><?=htmlspecialchars($row['room'])?></a></b></td>
 <td><?=$tier?></td>
@@ -241,6 +273,20 @@ Contribute data using the <a href='https://raw.githubusercontent.com/jhon/robint
 Get the most out of Robin: <a href='https://www.reddit.com/r/joinrobin/comments/4d8dlp/guide_20_list_of_most_known_scripts_and_how_to_be/'>List of Most Known Scripts</a><br />
 Want more Robin data? Checkout the <a href='https://www.reddit.com/r/robintracking/comments/4czzo2/robin_chatter_leader_board_official/'>Official Leader Board</a>, <a href='http://robintree-apr3.s3-website-us-east-1.amazonaws.com/'>RobinTree</a>, and <a href='http://justinhart.net/robintable/'>Robin Table</a>.<br />
 Found an issue? Want to contribute Code? Made your own Robin Mashup? Let me know on <a href='https://github.com/jhon/robintracker'>GitHub</a>!<br />
+<div class="checkbox"><label><input name='showNotifications' type='checkbox' />Enable Chrome Notifications for New Rooms</label></div>
+<script type='application/javascript'>
+function requestPermission(value)
+{
+	if(value && Notification && !Notification.permission !== "granted")
+	{
+		Notification.requestPermission();
+	}
+}
+$("input[name='showNotifications']").on("change",function() {
+	requestPermission($(this).is(":checked"));
+	$.cookie('notify',$(this).is(":checked"));
+});
+</script>
 <br />
 <?=intval($totalBeacons/2)?> updates for <?=$roomCount?> rooms in the last minute |
 <?php
