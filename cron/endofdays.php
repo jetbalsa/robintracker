@@ -22,7 +22,7 @@ uasort($data,function($a,$b){return $a['tier']<$b['tier'];});
 <td><b>Starting Users</b></td>
 <td><b>End Users</b></td>
 <td><b>Founded</b></td>
-<td><b>Merged</b></td>
+<td><b>Last Update</b></td>
 </tr></thead>
 <tbody>
 <?foreach($data as $row):?>
