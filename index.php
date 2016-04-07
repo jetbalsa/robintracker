@@ -152,12 +152,6 @@ if($row['count'] >= 100 && $row['beacons']<5)
 	continue;
 }
 
-$totalUsers += $row['count'];
-$totalGrow += $row['grow'];
-$totalStay += $row['stay'];
-$totalAbandon += $row['abandon'];
-$totalAbstain += $row['novote'];
-
 // Retrieve Tier and Room information
 $tier = '?';
 $child0 = '??';
@@ -203,6 +197,12 @@ if($roomCount>10 || $row['count']<50)
 {
 	continue;
 }
+
+$totalUsers += $row['count'];
+$totalGrow += $row['grow'];
+$totalStay += $row['stay'];
+$totalAbandon += $row['abandon'];
+$totalAbstain += $row['novote'];
 
 ?>
 <?if($row['count'] > 50 && abs($time-$row['formation'])<60):?>
