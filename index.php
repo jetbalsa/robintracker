@@ -301,7 +301,7 @@ $count -= 35*60;
 <td></td>
 <td></td>
 <td style="text-align: right"><b>Time to T17</b></td>
-<?if($count>120):?>
+<?if($count>180):?>
 <td colspan='2'><?=prettyDeltaTime($time+$count)?></td>
 <td colspan='6' class='text-danger'>This may be <b>inaccurate</b>.</td>
 <?else:?>
