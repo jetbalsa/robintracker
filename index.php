@@ -70,8 +70,7 @@ $(document).ready(function() {
 <body style="margin:16px;">
 <h1>Robin Tracker</h1>
 <p>Tier data updates every 2 minutes.</p>
-<p class='text-info'>Want to see why I don't trust the tier data? Click the room to see the computed history!</p>
-<p class='text-danger'>Uh, everything's under control. Situation normal. Uh, we had a slight weapons malfunction, but uh... everything's perfectly all right now. We're fine. We're all fine here now. Thank you. How are you?</p>
+<p class='text-danger'>Want to see why I don't trust the tier data? Click the room to see the computed history!</p>
 <table class='table table-striped'>
 <thead><tr>
 <td><b>Room</b></td>
@@ -269,7 +268,7 @@ $newRoomsT1 = $newRooms
 </tr>
 </tbody>
 </table>
-Contribute data using the <a href='https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js'>Standalone Userscript</a> or by enabling contribution in a compatible script like <a href='https://github.com/5a1t/parrot'>Parrot</a>, <a href='https://github.com/vartan/robin-grow'>Robin-Grow</a> or <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin-Autovoter</a>.<br />
+Contribute data using the <a href='https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js'>Standalone Userscript</a> or by enabling contribution in a compatible script like <a href='https://github.com/5a1t/parrot'>Parrot</a>, <a href='https://github.com/vartan/robin-grow'>Robin-Grow</a>, <a href='https://github.com/joefarebrother/leavebot'>Leavebot</a>, or <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin-Autovoter</a>.<br />
 Get the most out of Robin: <a href='https://www.reddit.com/r/joinrobin/comments/4d8dlp/guide_20_list_of_most_known_scripts_and_how_to_be/'>List of Most Known Scripts</a><br />
 Want more Robin data? Checkout the <a href='https://www.reddit.com/r/robintracking/comments/4czzo2/robin_chatter_leader_board_official/'>Official Leader Board</a>, <a href='http://robintree-apr3.s3-website-us-east-1.amazonaws.com/'>RobinTree</a>, and <a href='http://justinhart.net/robintable/'>Robin Table</a>.<br />
 Found an issue? Want to contribute Code? Made your own Robin Mashup? Let me know on <a href='https://github.com/jhon/robintracker'>GitHub</a>!<br />
