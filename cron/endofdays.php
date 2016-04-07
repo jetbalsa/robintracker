@@ -62,7 +62,7 @@ if($roomCount>10)
 <?endforeach;?>
 </tbody>
 </table>
-Thank you to everyone who contribute data using the <a href='https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js'>Standalone Userscript</a> or by enabling contribution in a compatible script like <a href='https://github.com/5a1t/parrot'>Parrot</a>, <a href='https://github.com/vartan/robin-grow'>Robin-Grow</a>, <a href='https://github.com/joefarebrother/leavebot'>Leavebot</a>, or <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin-Autovoter</a>.<br />
+Thank you to everyone who contribute data using the <a href='https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js'>Standalone Userscript</a> or by enabling contribution in a compatible script like <a href='https://github.com/5a1t/parrot'>Parrot</a>, <a href='https://github.com/vartan/robin-grow'>Robin-Grow</a>, <a href='https://github.com/joefarebrother/leavebot'>Leavebot</a>, and <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin-Autovoter</a>.<br />
 Thanks to all the folks who shared my dream of making robin data accessible including, but not limited to,the <a href='https://www.reddit.com/r/robintracking/comments/4czzo2/robin_chatter_leader_board_official/'>Official Leader Board</a>, <a href='http://robintree-apr3.s3-website-us-east-1.amazonaws.com/'>RobinTree</a>, and <a href='http://justinhart.net/robintable/'>Robin Table</a>.<br />
 Thank you to everyone who contributed to this project. You can find more information about the contributors (and the source for the leaderboard) on <a href='https://github.com/jhon/robintracker'>GitHub</a>!<br />
 Thank you to <a href='http://www.dreamhost.com/'>DreamHost</a> for putting up with these shenanigans.<br />
