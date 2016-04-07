@@ -37,9 +37,9 @@ $rooms = @array_combine($guids,$rooms);
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <?php
 $r = intval(@$_GET['r']);
-if($r==0)
+//if($r==0)
 {
-	$r = 60;
+	$r = 120;
 }
 ?>
 <meta http-equiv="refresh" content="<?=$r?>">
@@ -151,10 +151,12 @@ $roomCount++;
 
 $class = [];
 // Only report rooms with over 100 people if we have 5+ beacons
+/*
 if($row['count'] >= 100 && $row['beacons']<5)
 {
 	continue;
 }
+*/
 
 // Retrieve Tier and Room information
 $tier = '?';
