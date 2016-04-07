@@ -2,7 +2,7 @@
 // Generatea final page to display
 require_once __DIR__."/../config.php";
 
-$data = unserialize(file_get_contents('../dump/pedigree.bin'));
+$data = unserialize(file_get_contents(__DIR__.'/../dump/pedigree.bin'));
 uasort($data,function($a,$b){return $a['tier']<$b['tier'];});
 ?>
 <html>
