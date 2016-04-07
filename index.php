@@ -1,4 +1,6 @@
 <?php
+header('HTTP/1.0 403 Forbidden');
+exit;
 require_once __DIR__."/config.php";
 
 $start_time = explode(' ',microtime());

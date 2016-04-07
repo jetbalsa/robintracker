@@ -1,4 +1,6 @@
 <?php
+header('HTTP/1.0 403 Forbidden');
+exit;
 header('Access-Control-Allow-Origin: *');  
 echo "OK";
 require_once "config.php";
