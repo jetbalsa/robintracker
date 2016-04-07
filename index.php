@@ -70,9 +70,8 @@ $(document).ready(function() {
 <body style="margin:16px;">
 <h1>Robin Tracker</h1>
 <p>Tier data updates every 3 minutes.</p>
-<p class='text-info'>Want to see why I don't trust the tier data? Click the room to see the computed history!</p>
-<p class='text-danger'>Uh, everything's under control. Situation normal. Uh, we had a slight weapons malfunction, but uh... everything's perfectly all right now. We're fine. We're all fine here now. Thank you. How are you?</p>
-<p class='text-danger'>We had a reactor leak here. Give us a few minutes to lock it down. Large leak, very dangerous.</p>
+<p class='text-danger'>We here at RobinTracker only provide free-range heuristics. Sometimes they can get a little creative, but the tier data is <i>eventually</i> accurate.</p>
+<p class='text-info'>Boring conversation anyway. <b>LUKE, WE'RE GOING TO HAVE A TIER17!</b></p>
 <table class='table table-striped'>
 <thead><tr>
 <td><b>Room</b></td>
