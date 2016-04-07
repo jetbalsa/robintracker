@@ -4,7 +4,7 @@ require_once __DIR__."/../config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
-$data = $database->query("SELECT `ip`, `guid`, `room`, `count`, `grow`, `stay`, `abandon`, `novote`, `formation`, `reap`, MIN(`start_time`) as 'start_time', MAX(`end_time`) as 'end_time', SUM(`beacons`) as 'beacons' FROM (SELECT *, MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track_storage` WHERE `guid`!='' GROUP BY `ip`, `guid` UNION SELECT *, MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track` WHERE `guid`!='' GROUP BY `ip`, `guid`) AS A GROUP BY `ip`, `guid` ORDER BY `ip`, `start_time`");
+$data = $database->query("SELECT `ip`, `guid`, `room`, MIN(`min_count`) as 'min_count', MAX(`max_count`) as 'max_count', `grow`, `stay`, `abandon`, `novote`, `formation`, `reap`, MIN(`start_time`) as 'start_time', MAX(`end_time`) as 'end_time', SUM(`beacons`) as 'beacons' FROM (SELECT *, MIN(`count`) as 'min_count', MAX(`count`) as 'max_count', MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track_storage` WHERE `guid`!='' GROUP BY `ip`, `guid` UNION SELECT *,  MIN(`count`) as 'min_count', MAX(`count`) as 'max_count', MIN(`time`) as 'start_time', MAX(`time`) as 'end_time', COUNT(*) as 'beacons' FROM `track` WHERE `guid`!='' GROUP BY `ip`, `guid`) AS A GROUP BY `ip`, `guid` ORDER BY `ip`, `start_time`");
 
 $rooms = array();
 $currentIP = '';
@@ -71,6 +71,8 @@ function parseUserRooms($userRooms)
 		$start_time = $row['start_time'];
 		$end_time = $row['end_time'];
 		$count = $row['count'];
+		$max_count = $row['max_count'];
+		$min_count = $row['min_count'];
 		$grow = $row['grow'];
 		$stay = $row['stay'];
 		$abandon = $row['abandon'];
@@ -138,6 +140,8 @@ function parseUserRooms($userRooms)
 				"guid" => $guid,
 				"room" => $room,
 				"count" => $count,
+				"max_count" => $max_count,
+				"min_count" => $min_count,
 				"grow" => $grow,
 				"stay" => $stay,
 				"abandon" => $abandon,
@@ -180,6 +184,14 @@ function parseUserRooms($userRooms)
 		{
 			$rooms[$guid]['tier'] = $currentTier;
 		}
+		if($rooms[$guid]['min_count'] > $min_count)
+		{
+			$rooms[$guid]['min_count'] = $min_count;
+		}
+		if($rooms[$guid]['max_count'] < $max_count)
+		{
+			$rooms[$guid]['max_count'] = $max_count;
+		}
 
 		$lastRoom = $guid;
 		$lastEndTime = $end_time;
@@ -201,6 +213,9 @@ foreach($data as $row) {
 
 	array_push($userRooms,$row);
 }
+
+// In the mess, we missed the soKukuneli -> ccKufiPrFa transition
+array_push($rooms['54b10078-fd0b-11e5-b154-0e31fc1b0d95']['children'],'95f64b68-f9e8-11e5-bf4f-0e31fc1b0d95');
 
 // Do some post-processing to select parents/children
 //   our algorithm here is just to take the most
