@@ -151,12 +151,11 @@ $roomCount++;
 
 $class = [];
 // Only report rooms with over 100 people if we have 5+ beacons
-/*
 if($row['count'] >= 100 && $row['beacons']<5)
 {
 	continue;
 }
-*/
+
 
 // Retrieve Tier and Room information
 $tier = '?';
