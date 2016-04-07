@@ -263,8 +263,13 @@ $newRoomsT1 = $newRooms
 <td></td>
 <td></td>
 <td style="text-align: right"><b>New T8s Needed For T17</b></td>
-<td><?=($newRoomsT8>0)?$newRoomsT8:"<b>None!</b>"?></td>
+<?if($newRoomsT8>0):?>
+<td><?=$newRoomsT8?></td>
 <td colspan='7' class='text-danger'>This may be <b>inaccurate</b> during merges.</td>
+<?else:?>
+<td class='text-success'><b>None!</b></td>
+<td colspan='7' class='text-success'><b>No Time To Pack Pants People! Let's Cascade!</b></td>
+<?endif;?>
 </tr>
 </tbody>
 </table>
