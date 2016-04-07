@@ -56,7 +56,7 @@ else
 }
 $queryString .= $label;
 ?>
-( <a href='<?=$queryString?>'><?=$label?></a> )
+(&nbsp;<a href='<?=$queryString?>'><?=$label?></a>&nbsp;)
 </td>
 <td><b>Reaping</b></td>
 <td><b>Updated</b></td>
