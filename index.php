@@ -214,32 +214,7 @@ $totalGrow += $row['grow'];
 $totalStay += $row['stay'];
 $totalAbandon += $row['abandon'];
 $totalAbstain += $row['novote'];
-
-if($tier != '?')
-{
-$deltaTier = $lastTier - $tier;
-$lastTier = $tier;
-$roomsNeeded = $roomsNeeded * pow(2,$deltaTier);
-$roomsNeeded -= 1;
-}
-if($tier>=17)
-{
-$wroteT17Line = true;
-}
-if($roomsNeeded<0 && !$wroteT17Line && $tier<17):
-$wroteT17Line = true;
 ?>
-<tr>
-<td colspan='11' class='info'><b>Rooms above this line will merge into the T17</b> (Line not accurate during merges)</td>
-</tr>
-<?endif;?>
-<?if($row['count'] > 50 && abs($time-$row['formation'])<60):?>
-<script type='application/javascript'>
-$(document).ready(function() {
-	triggerMergeNotification("<?=htmlspecialchars($row['room'])?>",<?=$row['count']?>);
-});
-</script>
-<?endif;?>
 <tr class="<?=implode(' ',$class)?>">
 <td><b><a href='graph.php?guid=<?=htmlspecialchars($row['guid'])?>'><?=htmlspecialchars($row['room'])?></a></b></td>
 <td><?=$tier?></td>
@@ -298,18 +273,6 @@ for($i=17;$i>0;$i--)
 // The above loop measures the time to T17 reaping
 $count -= 35*60;
 ?>
-<tr>
-<td></td>
-<td></td>
-<td style="text-align: right"><b>Time to T17</b></td>
-<?if($count>180):?>
-<td colspan='2'><?=prettyDeltaTime($time+$count)?></td>
-<td colspan='6' class='text-danger'>This may be <b>inaccurate</b>.</td>
-<?else:?>
-<td colspan='2' class='text-success'><b>Imminent!</b></td>
-<td colspan='6' class='text-success'><!--<b>Insert Joke Here</b>--></td>
-<?endif;?>
-</tr>
 </tbody>
 </table>
 Contribute data using the <a href='https://raw.githubusercontent.com/jhon/robintracker/master/robintracker.user.js'>Standalone Userscript</a> or by enabling contribution in a compatible script like <a href='https://github.com/5a1t/parrot'>Parrot</a>, <a href='https://github.com/vartan/robin-grow'>Robin-Grow</a>, <a href='https://github.com/joefarebrother/leavebot'>Leavebot</a>, or <a href='https://github.com/keythkatz/Robin-Autovoter'>Robin-Autovoter</a>.<br />
