@@ -4,7 +4,21 @@ require_once "config.php";
 header('Access-Control-Allow-Origin: *');  
 header('Content-Type: application/json');
 
-$data = $database->query("SELECT *, COUNT(*) AS 'beacons', MAX(`time`) as 'time' FROM (SELECT * FROM `track` WHERE  `time`>(UNIX_TIMESTAMP()-120) AND `guid`!='' ORDER BY `id` DESC) as T GROUP BY `guid` ORDER BY `count` DESC")->fetchAll();
+// Cache this page for 4s
+$ts = gmdate('D, d M Y H:i:s ',(time()&0xfffffffc)) . 'GMT';
+$etag = '"'.md5($ts).'"';
+
+$if_none_match = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] : false;
+if($if_none_match && $if_none_match == $etag)
+{
+	header('HTTP/1.1 304 Not Modified');
+	exit();
+}
+
+header('Last-Modified: ' . $ts);
+header("ETag: $etag");
+
+$data = $database->query("SELECT *, COUNT(*) AS 'beacons', MAX(`time`) as 'time' FROM `track` WHERE `time`>(UNIX_TIMESTAMP()-120) AND `guid`!='' GROUP BY `guid` ORDER BY `count` DESC;")->fetchAll();
 
 // Someone with better SQL knowlege might be able to do all this in one query, but since
 //   we're relying on a derived table above right now we'll just make this two queries
