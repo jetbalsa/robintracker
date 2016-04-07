@@ -208,15 +208,18 @@ $totalStay += $row['stay'];
 $totalAbandon += $row['abandon'];
 $totalAbstain += $row['novote'];
 
+if($tier != '?')
+{
 $deltaTier = $lastTier - $tier;
 $lastTier = $tier;
 $roomsNeeded = $roomsNeeded * pow(2,$deltaTier);
 $roomsNeeded -= 1;
-if($roomsNeeded<0 && !$wroteT17Line):
+}
+if($roomsNeeded<0 && !$wroteT17Line && $tier!=17):
 $wroteT17Line = true;
 ?>
 <tr>
-<td colspan='11' class='info'><b>Rooms below this line will not be in T17</b> (Line not accurate during merges)</td>
+<td colspan='11' class='info'><b>Rooms above this line will merge into the T17</b> (Line not accurate during merges)</td>
 </tr>
 <?endif;?>
 <?if($row['count'] > 50 && abs($time-$row['formation'])<60):?>
