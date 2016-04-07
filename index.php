@@ -128,6 +128,10 @@ $totalAbstains = 0;
 $totalBeacons = 0;
 $roomCount = 0;
 $tierCounts = array();
+
+$lastTier = 17;
+$roomsNeeded = 1;
+$wroteT17Line = false;
 ?>
 
 <?foreach($data as $row):?>
@@ -204,7 +208,17 @@ $totalStay += $row['stay'];
 $totalAbandon += $row['abandon'];
 $totalAbstain += $row['novote'];
 
+$deltaTier = $lastTier - $tier;
+$lastTier = $tier;
+$roomsNeeded = $roomsNeeded * pow(2,$deltaTier);
+$roomsNeeded -= 1;
+if($roomsNeeded<0 && !$wroteT17Line):
+$wroteT17Line = true;
 ?>
+<tr>
+<td colspan='11' class='info'><b>Rooms below this line will not be in T17</b> (Line not accurate during merges)</td>
+</tr>
+<?endif;?>
 <?if($row['count'] > 50 && abs($time-$row['formation'])<60):?>
 <script type='application/javascript'>
 $(document).ready(function() {
@@ -243,33 +257,6 @@ $(document).ready(function() {
 <td></td>
 <td></td>
 <td></td>
-</tr>
-<?
-$newRooms = 0.5;
-for($i=17;$i>0;$i--)
-{
-	$newRooms *= 2;
-	$roomsAtTier = 0;
-	if(!empty(@$tierCounts[$i]))
-	{
-		$roomsAtTier = $tierCounts[$i];
-	}
-	$newRooms -= $roomsAtTier;
-	if($i==8) $newRoomsT8 = $newRooms;
-}
-$newRoomsT1 = $newRooms
-?>
-<tr>
-<td></td>
-<td></td>
-<td style="text-align: right"><b>New T8s Needed For T17</b></td>
-<?if($newRoomsT8>0):?>
-<td><?=$newRoomsT8?></td>
-<td colspan='7' class='text-danger'>This may be <b>inaccurate</b> during merges.</td>
-<?else:?>
-<td class='text-success'><b>None!</b></td>
-<td colspan='7' class='text-success'><b>No Time To Pack Pants People! Let's Cascade!</b></td>
-<?endif;?>
 </tr>
 </tbody>
 </table>
