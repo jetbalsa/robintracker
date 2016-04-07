@@ -4,6 +4,20 @@ require_once "config.php";
 $start_time = explode(' ',microtime());
 $start_time = $start_time[0] + $start_time[1];
 
+// Cache this page for 4s
+$ts = gmdate('D, d M Y H:i:s ',(time()&0xfffffffc)) . 'GMT';
+$etag = '"'.md5($ts).'"';
+
+$if_none_match = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] : false;
+if($if_none_match && $if_none_match == $etag)
+{
+	header('HTTP/1.1 304 Not Modified');
+	exit();
+}
+
+header('Last-Modified: ' . $ts);
+header("ETag: $etag");
+
 $data = $database->query("SELECT *, COUNT(*) AS 'beacons', MAX(`time`) as 'time' FROM `track` WHERE `time`>(UNIX_TIMESTAMP()-120) AND `guid`!='' GROUP BY `guid` ORDER BY `count` DESC;")->fetchAll();
 
 // Someone with better SQL knowlege might be able to do all this in one query, but since
