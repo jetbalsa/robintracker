@@ -25,8 +25,8 @@ $data = $database->query("SELECT *, COUNT(*) AS 'beacons', MAX(`time`) as 'time'
 function getGuid($r) { return $r['guid']; }
 $guids = array_map(getGuid, $data);
 $rooms = $database->select('rooms',['guid','room','tier','parent','child0','child1'],['OR'=>['guid'=>$guids,'parent'=>$guids]]);
-$guids = array_map(getGuid, $rooms);
-$rooms = array_combine($guids,$rooms);
+$guids = @array_map(getGuid, $rooms);
+$rooms = @array_combine($guids,$rooms);
 ?>
 <html>
 <head>
@@ -70,7 +70,9 @@ $(document).ready(function() {
 <body style="margin:16px;">
 <h1>Robin Tracker</h1>
 <p>Tier data updates every 3 minutes.</p>
-<p class='text-danger'>Want to see why I don't trust the tier data? Click the room to see the computed history!</p>
+<p class='text-info'>Want to see why I don't trust the tier data? Click the room to see the computed history!</p>
+<p class='text-danger'>Uh, everything's under control. Situation normal. Uh, we had a slight weapons malfunction, but uh... everything's perfectly all right now. We're fine. We're all fine here now. Thank you. How are you?</p>
+<p class='text-danger'>We had a reactor leak here. Give us a few minutes to lock it down. Large leak, very dangerous.</p>
 <table class='table table-striped'>
 <thead><tr>
 <td><b>Room</b></td>
