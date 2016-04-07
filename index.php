@@ -71,7 +71,6 @@ $(document).ready(function() {
 <h1>Robin Tracker</h1>
 <p>Tier data updates every 3 minutes.</p>
 <p class='text-danger'>We here at RobinTracker only provide free-range heuristics. Sometimes they can get a little creative, but the tier data is <i>eventually</i> accurate.</p>
-<p class='text-info'>Boring conversation anyway. <b>LUKE, WE'RE GOING TO HAVE A TIER17!</b></p>
 <table class='table table-striped'>
 <thead><tr>
 <td><b>Room</b></td>
