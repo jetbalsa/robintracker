@@ -4,7 +4,9 @@ Thanks to everyone who used and supported the leaderboard over the last week. It
 ## Want data for visualizations?
 The tier and pedigree information is already available here: https://monstrouspeace.com/robintracker/dump/pedigree.json
 
-I will be creating and uploading a MySQL dump tomorrow (check back)!
+Room Data: https://monstrouspeace.com/robintracker/dump/rooms.sql.gz
+
+Tracking Beacon Data: https://monstrouspeace.com/robintracker/dump/track_storage.sql.gz
 
 Do you want other information? File an issue letting me know what specific data you're interested in!
 
