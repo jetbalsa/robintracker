@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: mysql.monstrouspeace.com
--- Generation Time: Apr 04, 2016 at 09:38 PM
+-- Generation Time: Apr 08, 2016 at 01:43 AM
 -- Server version: 5.6.25-log
 -- PHP Version: 7.0.4
 
@@ -99,7 +99,13 @@ ALTER TABLE `track`
   ADD PRIMARY KEY (`id`),
   ADD KEY `room` (`room`),
   ADD KEY `count` (`count`),
-  ADD KEY `guid` (`guid`);
+  ADD KEY `guid` (`guid`),
+  ADD KEY `guid_2` (`guid`,`count`),
+  ADD KEY `ip` (`ip`),
+  ADD KEY `time` (`time`),
+  ADD KEY `guid_3` (`guid`,`ip`),
+  ADD KEY `guid_4` (`guid`,`count`,`time`),
+  ADD KEY `guid_5` (`guid`,`time`);
 
 --
 -- Indexes for table `track_storage`
@@ -108,7 +114,10 @@ ALTER TABLE `track_storage`
   ADD PRIMARY KEY (`id`),
   ADD KEY `room` (`room`),
   ADD KEY `count` (`count`),
-  ADD KEY `guid` (`guid`);
+  ADD KEY `guid` (`guid`),
+  ADD KEY `guid_2` (`guid`,`ip`),
+  ADD KEY `ip` (`ip`),
+  ADD KEY `time` (`time`);
 
 --
 -- AUTO_INCREMENT for dumped tables
