@@ -127,6 +127,14 @@ function parseUserRooms($userRooms)
 		{
 			$currentTier = 5;
 		}
+		if($dt>1920)
+		{
+			$lastRoom = "";
+			$currentTier = 1;
+			$lastCount = 0;
+			$lastEndTime = 0;
+			continue;
+		}
 
 		if($currentTier==1 || $rooms[$lastRoom]['tier']>$currentTier)
 		{
