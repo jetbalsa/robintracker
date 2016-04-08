@@ -2,7 +2,7 @@
 Thanks to everyone who used and supported the leaderboard over the last week. It's been a fun ride!
 
 ## Want data for visualizations?
-The tier and pedigree information is already available here: https://monstrouspeace.com/robintracker/dump/pedigree.json
+The tier and pedigree information is available here: https://monstrouspeace.com/robintracker/dump/pedigree.json
 
 Room Data: https://monstrouspeace.com/robintracker/dump/rooms.sql.gz
 
