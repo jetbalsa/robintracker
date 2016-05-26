@@ -352,7 +352,14 @@ function vis_main(vis_sel) {
             // Update the nodes
             var node = svg_g.selectAll("g.node")
                 .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
+            
+            // Drag behavior not wanted
+            var drag = d3.behavior.drag()
+                .on('dragstart', function () {
+                    d3.event.sourceEvent.stopPropagation();
+                    d3.event.sourceEvent.preventDefault();
+                });
+            
             // Enter any new nodes at the parent's previous position
             var nodeEnter = node.enter().append("svg:g")
                 .attr("class", "node")
@@ -362,7 +369,8 @@ function vis_main(vis_sel) {
                     d3.event.preventDefault();
                     instance.toggleAll(d);
                     instance.update(d);
-                });
+                })
+                .call(drag);
 
             nodeEnter.append("svg:circle")
                 .attr("r", 1e-6)
