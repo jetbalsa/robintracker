@@ -357,7 +357,12 @@ function vis_main(vis_sel) {
             var nodeEnter = node.enter().append("svg:g")
                 .attr("class", "node")
                 .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-                .on("click", function(d) { instance.toggle(d); instance.update(d); });
+                .on("click", function(d) { instance.toggle(d); instance.update(d); })
+                .on('contextmenu', function(d) {
+                    d3.event.preventDefault();
+                    instance.toggleAll(d);
+                    instance.update(d);
+                });
 
             nodeEnter.append("svg:circle")
                 .attr("r", 1e-6)
@@ -478,6 +483,29 @@ function vis_main(vis_sel) {
             d._children = null;
         }
     };
+    
+    // either expands or collapses all nodes under `d`
+    this.toggleAll = function(d) {
+        if (d._children) {
+            function expand(d) {
+                if (d._children) {
+                    d.children = d._children;
+                    d.children.forEach(expand);
+                    d._children = null;
+                }
+            }
+            expand(d);
+        } else if (d.children) {
+            function collapse(d) {
+                if (d.children) {
+                    d._children = d.children;
+                    d._children.forEach(collapse);
+                    d.children = null;
+                }
+            };
+            collapse(d);
+        }
+    }
     
     // Can only be used when called by a d3 event, do not call directly
     this._redraw = function() {
