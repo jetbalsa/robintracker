@@ -114,6 +114,7 @@ while(count($nodes))
 ?>
         ];
     </script>
+    <script>var vis;</script>
 </head>
 <body>
     <div id="info">
@@ -135,10 +136,10 @@ printf("            <p>Page generation took %.3fs</p>\n",$total_time);
     </div>
     <svg id='vis_svg'></svg>
     <script>
-    var vis = new vis_main('#vis_svg')
+    vis = new vis_main('#vis_svg')
         .setData(data)
         .setZoomInit(0.6)
-        .start();
+        .start(6);
     </script>
 <?=@$footer?>
 </body>
