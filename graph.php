@@ -119,7 +119,8 @@ while(count($nodes))
 <body>
     <div id="info">
         <p class="title"><?=$data[$guid]['room']?> (Tier <?=$data[$guid]['tier']?>)</p>
-        <p>Click nodes to toggle. Zoom with scroll. Pan with mouse drag.</div>
+        <p>Click nodes to toggle. Zoom with scroll. Pan with mouse drag.</p>
+        <p>Right-click nodes to collapse/expand all nodes under it.</p>
     </div>
     <div id="more">
         <span>(?)</span>
