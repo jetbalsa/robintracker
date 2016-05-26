@@ -38,13 +38,15 @@ $guid = htmlspecialchars(@$_GET['guid']);
     body {
         font-size: 15px;
         font-family: "Open Sans", sans-serif;
+        background: #f4f4f4;
     }
     
     p { margin: 5px 0; }
     
     svg {
-        border: 1px solid #e3e3e3;
         margin: 20px;
+        background: white;
+        box-shadow: 0 -1px 0 #efefef,0 0 2px rgba(0,0,0,0.16),0 1.5px 4px rgba(0,0,0,0.18);
     }
     
     #info {
@@ -56,25 +58,62 @@ $guid = htmlspecialchars(@$_GET['guid']);
     }
     
     #more {
+        display: flex;
         position: fixed;
         top: 10px;
         right: 20px;
         color: gray;
+        z-index: 10;
     }
     
-    #more .morehover {
+    #details #details-hover {
         display: none;
         position: absolute;
         top: 100%;
-        right: 100%;
+        right: 0;
         font-size: 12px;
         width: 350px;
         background: white;
         padding: 10px;
         box-shadow: 0 -1px 0 #efefef,0 0 2px rgba(0,0,0,0.16),0 1.5px 4px rgba(0,0,0,0.18)
     }
-    #more:hover .morehover {
+    #details:hover #details-hover {
         display: block;
+    }
+    
+    #expand-button {
+        margin-right: 20px
+    }
+    #expand-button:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    
+    #vis_svg[data-expanded="yes"] {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 5;
+        margin: 0;
+    }
+    
+    @media (max-width: 480px) {
+        svg {
+            margin-left: 0;
+            margin-right: 0;
+            margin-bottom: 0;
+            width: 100%;
+        }
+        
+        #more {
+            position: relative;
+            top: 0;
+            right: 0;
+            padding: 8px 20px;
+            background: rgba(0,0,0,0.055);
+        }
     }
     </style>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -100,48 +139,94 @@ while(count($nodes))
     echo "                parent: '".$parent."',\n";
     echo "            },\n";
 
-    $child0 = $n['children'][0];
-    $child1 = $n['children'][1];
-    if(!empty($child0))
+    if (isset($n['children'][0]))
     {
-        array_push($nodes,$child0);
+        $child0 = $n['children'][0];
+        if(!empty($child0))
+        {
+            array_push($nodes,$child0);
+        }
     }
-    if(!empty($child1))
+    
+    if (isset($n['children'][1]))
     {
-        array_push($nodes,$child1);
+        $child1 = $n['children'][1];
+        if(!empty($child1))
+        {
+            array_push($nodes,$child1);
+        }
     }
 }
 ?>
         ];
     </script>
-    <script>var vis;</script>
+    <script>
+    var vis;
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        vis = new vis_main('#vis_svg');
+        vis.setData(data)
+            .setZoomInit(0.6)
+            .start(6);
+            
+        var original_dimensions = vis.getDimensions();
+        
+        function vis_expand_toggle() {
+            var vis_el = document.getElementById('vis_svg');
+            if (vis_el.getAttribute('data-expanded').toLowerCase() == 'yes') {
+                vis_el.setAttribute('data-expanded', 'no');
+                document.getElementById('expand-button').innerHTML = "Expand graph";
+                
+                d3.select('#vis_svg').attr('width',  original_dimensions[0])
+                                     .attr('height', original_dimensions[1]);
+                
+                history.replaceState(undefined, undefined, "#");
+            } else {
+                vis_el.setAttribute('data-expanded', 'yes');
+                document.getElementById('expand-button').innerHTML = "Contract graph";
+                
+                d3.select('#vis_svg').attr('width',  vis.getViewportDimensions()[0])
+                                     .attr('height', vis.getViewportDimensions()[1]);
+                
+                history.replaceState(undefined, undefined, "#expanded");
+            }
+        }
+        
+        if (window.location.hash) {
+            var hash = window.location.hash.substring(1).toLowerCase();
+            if (hash == 'expanded') {
+                vis_expand_toggle();
+            }
+        }
+        
+        document.getElementById('expand-button').addEventListener('click', vis_expand_toggle, false);
+    });
+    </script>
 </head>
 <body>
+    <div id="more">
+        <div id="expand-button">Expand graph</div>
+        <div id="details">
+            <span>(?)</span>
+            <div id="details-hover">
+                <p>A visualization of the <?php echo $data[$guid]['room'] ?> family tree</p>
+                <p>Graph generation code created by /u/kwwxis</p>
+                <p>Modified by /u/GuitarShirt to use RobinTracker data</p>
+                <p><?php
+                $end_time = explode(' ',microtime());
+                $total_time = ($end_time[0] + $end_time[1]) - $start_time;
+                printf("Page generation took %.3fs",$total_time);
+                ?></p>
+            </div>
+        </div>
+    </div>
     <div id="info">
         <p class="title"><?=$data[$guid]['room']?> (Tier <?=$data[$guid]['tier']?>)</p>
         <p>Click nodes to toggle. Zoom with scroll. Pan with mouse drag.</p>
         <p>Right-click nodes to collapse/expand all nodes under it.</p>
     </div>
-    <div id="more">
-        <span>(?)</span>
-        <div class="morehover">
-            <p>A visualization of the <?=$data->$guid->room?> family tree</p>
-            <p>Visualization created by /u/kwwxis</p>
-            <p>Modified by /u/GuitarShirt to use RobinTracker data</p>
-<?php
-$end_time = explode(' ',microtime());
-$total_time = ($end_time[0] + $end_time[1]) - $start_time;
-printf("            <p>Page generation took %.3fs</p>\n",$total_time);
-?>
-        </div>
-    </div>
-    <svg id='vis_svg'></svg>
+    <svg id="vis_svg" data-expanded="no"></svg>
     <script>
-    vis = new vis_main('#vis_svg')
-        .setData(data)
-        .setZoomInit(0.6)
-        .start(6);
-    </script>
 <?=@$footer?>
 </body>
 </html>
